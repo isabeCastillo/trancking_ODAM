@@ -26,9 +26,7 @@
             <input type="password" name="password" id="password" required>
         </div>
 
-        <button type="submit" style="margin-top: 15px;">
-            Entrar
-        </button>
+        <button type="submit" style="margin-top: 15px;">Entrar</button>
     </form>
 </body>
 </html>

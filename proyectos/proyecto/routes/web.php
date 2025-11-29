@@ -18,7 +18,7 @@ Route::get('/login', function(){
             return redirect()->route('motorista.dashboard');
         }
     }
-    return view('login.login');
+    return view('auth.login');
 })->name('login');
 // Procesar login
 Route::post('/login', function (Request $request) {
