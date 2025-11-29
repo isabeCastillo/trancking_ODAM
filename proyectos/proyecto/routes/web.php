@@ -9,7 +9,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 //login
-Route::get('/login', function(){
+Route::get('/login', function () {
     if (Auth::check()) {
         // Si ya está logueado, redirigir según rol
         if (auth()->user()->rol === 'admin') {
@@ -18,9 +18,11 @@ Route::get('/login', function(){
             return redirect()->route('motorista.dashboard');
         }
     }
+
     return view('auth.login');
 })->name('login');
-// Procesar login
+
+//procesa login
 Route::post('/login', function (Request $request) {
     $credentials = $request->validate([
         'username' => ['required'],
@@ -42,7 +44,7 @@ Route::post('/login', function (Request $request) {
     ])->onlyInput('username');
 })->name('login.post');
 
-// Cerrar sesión
+//cerrar sesion
 Route::post('/logout', function (Request $request) {
     Auth::logout();
 
@@ -52,13 +54,16 @@ Route::post('/logout', function (Request $request) {
     return redirect()->route('login');
 })->name('logout');
 
-// Rutas protegidas por autenticación
-Route::middleware('auth')->group(function () {
+//rutas del admin
+Route::middleware(['auth', 'is_admin'])->group(function () {
     Route::get('/admin', function () {
-        return view('dashboards.admin');
+        return view('dashboard.admin');
     })->name('admin.dashboard');
+});
 
+//rutas para motorista
+Route::middleware(['auth', 'is_motorista'])->group(function () {
     Route::get('/motorista', function () {
-        return view('dashboards.motorista');
+        return view('dashboard.motorista');
     })->name('motorista.dashboard');
 });
