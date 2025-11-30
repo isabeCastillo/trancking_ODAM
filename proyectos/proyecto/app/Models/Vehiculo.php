@@ -14,6 +14,9 @@ class Vehiculo extends Model
         'marca',
         'modelo',
         'color',
+        'capacidad',
+        'tipo',
+        'estado'
     ];
 
     public function envios()

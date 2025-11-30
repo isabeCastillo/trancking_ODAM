@@ -14,6 +14,9 @@ return new class extends Migration
             $table->string('marca');
             $table->string('modelo');
             $table->string('color')->nullable();
+            $table->integer('capacidad'); 
+            $table->string('tipo'); 
+            $table->enum('estado', ['Disponible', 'Mantenimiento'])->default('Disponible');
             $table->timestamps();
         });
     }
