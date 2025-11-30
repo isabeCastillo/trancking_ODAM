@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\User;
 use Livewire\Component;
 use App\Models\Vehiculo;
 
@@ -16,6 +17,7 @@ class VehiculosForm extends Component
 
     public function mount(?Vehiculo $vehiculo = null)
     {
+        $this->motoristas = User::where('rol', 'motorista')->get();
         $this->vehiculo = $vehiculo;
 
         if ($vehiculo) {
@@ -26,12 +28,12 @@ class VehiculosForm extends Component
             $this->capacidad = $vehiculo->capacidad;
             $this->tipo = $vehiculo->tipo;
             $this->estado = $vehiculo->estado;
+            $this->user_id = $vehiculo->user_id;
         }
     }
 
     public function save()
     {
-        dd("Entró al método save");
 
         $this->validate([
             'placa' => 'required|string',
@@ -41,6 +43,7 @@ class VehiculosForm extends Component
             'capacidad' => 'required|integer',
             'tipo' => 'required|string',
             'estado' => 'required|string',
+            'user_id' => 'nullable|exists:users,id'
         ]);
 
         $data = [
@@ -51,6 +54,7 @@ class VehiculosForm extends Component
             'capacidad' => $this->capacidad,
             'tipo' => $this->tipo,
             'estado' => $this->estado,
+            'user_id' => $this->user_id,
         ];
 
         if ($this->vehiculo) {
