@@ -13,6 +13,9 @@
                 <th>Placa</th>
                 <th>Marca</th>
                 <th>Modelo</th>
+                <th>Color</th>
+                <th>Capacidad</th>
+                <th>Tipo</th>
                 <th>Estado</th>
                 <th>Acciones</th>
             </tr>
@@ -24,6 +27,9 @@
                     <td>{{ $v->placa }}</td>
                     <td>{{ $v->marca }}</td>
                     <td>{{ $v->modelo }}</td>
+                    <td>{{ $v->color }}</td>
+                    <td>{{ $v->capacidad }}</td>
+                    <td>{{ $v->tipo }}</td>
                     <td>{{ $v->estado }}</td>
                     <td>
                         <a href="{{ route('vehiculos.edit', $v->id) }}">Editar</a>

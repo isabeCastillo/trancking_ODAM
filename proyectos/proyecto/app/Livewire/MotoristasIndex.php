@@ -7,7 +7,7 @@ use App\Models\User;
 
 class MotoristasIndex extends Component
 {
-    public $busqueda = ' ';
+    public $busqueda = '';
 
     public function render()
     {

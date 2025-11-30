@@ -7,7 +7,7 @@ use Livewire\Component;
 
 class VehiculosIndex extends Component
 {
-    public $buscar = ' ';
+    public $buscar = '';
     public function render()
     {
        $vehiculos = Vehiculo::where('placa', 'like', '%'.$this->buscar.'%')
