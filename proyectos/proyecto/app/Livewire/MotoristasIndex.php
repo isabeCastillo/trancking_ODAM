@@ -3,11 +3,17 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use App\Models\User;
 
 class MotoristasIndex extends Component
 {
+    public $buscar;
+
     public function render()
     {
-        return view('livewire.motoristas-index');
+        
+        $motoristas = User::where('rol', 'motorista')->where(function($q) {
+            $q->where('name', 'like', '%'.$this->bus)
+        })
     }
 }
