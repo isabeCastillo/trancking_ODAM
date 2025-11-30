@@ -9,9 +9,15 @@
 
     <p>Hola, {{ auth()->user()->name }} (rol: {{ auth()->user()->rol }})</p>
 
+    
+    <p>
+        <a href="{{ route('envios.index') }}"> Gestionar envíos</a>
+    </p>
+
     <form method="POST" action="{{ route('logout') }}">
         @csrf
         <button type="submit">Cerrar sesión</button>
     </form>
+    
 </body>
 </html>

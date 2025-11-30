@@ -1,13 +1,15 @@
 <?php
 
-
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Livewire\EnviosIndex;
+use App\Livewire\EnviosForm;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
 //login
 Route::get('/login', function () {
     if (Auth::check()) {
@@ -56,9 +58,16 @@ Route::post('/logout', function (Request $request) {
 
 //rutas del admin
 Route::middleware(['auth', 'is_admin'])->group(function () {
+
     Route::get('/admin', function () {
         return view('dashboard.admin');
     })->name('admin.dashboard');
+
+    // rutas de envíos (estas deben estar dentro del admin)
+    Route::get('/envios', EnviosIndex::class)->name('envios.index');
+    Route::get('/envios/crear', EnviosForm::class)->name('envios.create');
+    Route::get('/envios/{envio}/editar', EnviosForm::class)->name('envios.edit');
+
 });
 
 //rutas para motorista
