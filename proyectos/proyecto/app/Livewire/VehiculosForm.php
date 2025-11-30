@@ -7,6 +7,10 @@ use App\Models\Vehiculo;
 
 class VehiculosForm extends Component
 {
+    //Para relacionar motorista a un vehiuclo.
+    public $user_id;
+    public $motoristas;
+
     public $vehiculo;
     public $placa, $marca, $modelo, $color, $capacidad, $tipo, $estado = 'Disponible';
 

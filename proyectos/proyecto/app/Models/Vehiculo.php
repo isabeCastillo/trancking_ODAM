@@ -23,4 +23,7 @@ class Vehiculo extends Model
     {
         return $this->hasMany(Envio::class, 'id_vehiculo');
     }
+     public function motorista() {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }
