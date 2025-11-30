@@ -12,8 +12,8 @@ class MotoristasIndex extends Component
     public function render()
     {
         $motoristas = User::where('rol', 'motorista')
-            ->where(function ($q) {
-                $q->where('name', 'like', '%'.$this->busqueda.'%')
+            ->where(function ($query) {
+                $query->where('name', 'like', '%'.$this->busqueda.'%')
                   ->orWhere('email', 'like', '%'.$this->busqueda.'%')
                   ->orWhere('username', 'like', '%'.$this->busqueda.'%');
             })
@@ -26,5 +26,11 @@ class MotoristasIndex extends Component
     {
         User::find($id)?->delete();
         session()->flash('message', 'Motorista eliminado correctamente.');
+    }
+    public function toggleEstado($id)
+    {
+        $motorista = User::findOrFail($id);
+        $motorista->estado = !$motorista->estado;
+        $motorista->save();
     }
 }
