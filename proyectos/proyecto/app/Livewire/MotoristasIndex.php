@@ -7,13 +7,24 @@ use App\Models\User;
 
 class MotoristasIndex extends Component
 {
-    public $buscar;
+    public $busqueda = ' ';
 
     public function render()
     {
-        
-        $motoristas = User::where('rol', 'motorista')->where(function($q) {
-            $q->where('name', 'like', '%'.$this->bus)
-        })
+        $motoristas = User::where('rol', 'motorista')
+            ->where(function ($q) {
+                $q->where('name', 'like', '%'.$this->busqueda.'%')
+                  ->orWhere('email', 'like', '%'.$this->busqueda.'%')
+                  ->orWhere('username', 'like', '%'.$this->busqueda.'%');
+            })
+            ->get();
+
+        return view('motoristas.index', compact('motoristas'));
+    }
+
+    public function eliminar($id)
+    {
+        User::find($id)?->delete();
+        session()->flash('message', 'Motorista eliminado correctamente.');
     }
 }
