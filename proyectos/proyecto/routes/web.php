@@ -86,11 +86,11 @@ Route::middleware(['auth'])->group(function () {
 
     // rutas para creacion de motoristas
     Route::get('/motoristas', MotoristasIndex::class)->name('motoristas.index');
-    Route::get('/motoristas/create', MotoristasForm::class)->name('motoristas.create');
-    Route::get('/motoristas/{id}/edit', MotoristasForm::class)->name('motoristas.edit');
+    Route::get('/motoristas/crear', MotoristasForm::class)->name('motoristas.create');
+    Route::get('/motoristas/{user}/editar', MotoristasForm::class)->name('motoristas.edit');
 
     // rutas para creacion de vehículos
     Route::get('/vehiculos', VehiculosIndex::class)->name('vehiculos.index');
-    Route::get('/vehiculos/create', VehiculosForm::class)->name('vehiculos.create');
-    Route::get('/vehiculos/{id}/edit', VehiculosForm::class)->name('vehiculos.edit');
+    Route::get('/vehiculos/crear', VehiculosForm::class)->name('vehiculos.create');
+    Route::get('/vehiculos/{vehiculo}/editar', VehiculosForm::class)->name('vehiculos.edit');
 });

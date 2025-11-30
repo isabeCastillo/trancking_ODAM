@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Motoristas;
+namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\User;
