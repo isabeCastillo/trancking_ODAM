@@ -19,7 +19,7 @@ class MotoristasIndex extends Component
             })
             ->get();
 
-        return view('motoristas.index', compact('motoristas'));
+        return view('livewire.motoristas-index', compact('motoristas'));
     }
 
     public function eliminar($id)

@@ -14,7 +14,7 @@ class VehiculosIndex extends Component
             ->orWhere('marca', 'like', '%'.$this->buscar.'%')
             ->get();
 
-        return view('vehiculos.index', compact('vehiculos'));
+        return view('livewire.vehiculos-index', compact('vehiculos'));
     }
 
     public function eliminar($id)

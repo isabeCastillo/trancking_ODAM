@@ -27,12 +27,16 @@ class VehiculosForm extends Component
 
     public function save()
     {
+        dd("Entró al método save");
+
         $this->validate([
             'placa' => 'required|string',
             'marca' => 'required|string',
             'modelo' => 'required|string',
+            'color' => 'nullable|string',
             'capacidad' => 'required|integer',
             'tipo' => 'required|string',
+            'estado' => 'required|string',
         ]);
 
         $data = [
@@ -56,6 +60,6 @@ class VehiculosForm extends Component
 
     public function render()
     {
-        return view('vehiculos.form');
+        return view('livewire.vehiculos-form');
     }
 }

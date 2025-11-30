@@ -54,12 +54,12 @@ class MotoristasForm extends Component
             ]);
         }
 
-        return redirect()->route('motoristas.index');
+        return redirect()->route('livewire.motoristas-index');
     }
 
     public function render()
     {
-        return view('motoristas.form');
+        return view('livewire.motoristas-form');
     }
 }
 

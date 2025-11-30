@@ -91,6 +91,6 @@ Route::middleware(['auth'])->group(function () {
 
     // rutas para creacion de vehículos
     Route::get('/vehiculos', VehiculosIndex::class)->name('vehiculos.index');
-    Route::get('/vehiculos/crear', VehiculosForm::class)->name('vehiculos.create');
+    Route::get('/vehiculos/create', VehiculosForm::class)->name('vehiculos.create');
     Route::get('/vehiculos/{vehiculo}/editar', VehiculosForm::class)->name('vehiculos.edit');
 });
