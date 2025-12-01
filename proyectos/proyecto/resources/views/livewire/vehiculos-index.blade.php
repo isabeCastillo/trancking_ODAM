@@ -122,6 +122,7 @@
                 <th>Capacidad</th>
                 <th>Tipo</th>
                 <th>Estado</th>
+                <th>Motorista Asignado</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -136,6 +137,7 @@
                     <td>{{ $v->capacidad }}</td>
                     <td>{{ $v->tipo }}</td>
                     <td>{{ $v->estado }}</td>
+                    <td>{{ $v->motorista?->name ?? 'Sin motorista' }}</td>
                     <td>
                         <a href="{{ route('vehiculos.edit', $v->id) }}" class="btn-edit">Editar</a>
                         <button wire:click="eliminar({{ $v->id }})" class="btn-delete">Eliminar</button>

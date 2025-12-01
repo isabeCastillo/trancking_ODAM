@@ -24,9 +24,7 @@
                     <td>{{ $m->username }}</td>
                     <td>
                         <a href="{{ route('motoristas.edit', $m->id) }}">Editar</a>
-                        <button wire:click="toggleEstado({{ $m->id }})">
-                            {{ $m->estado ? 'Desactivar' : 'Activar' }}
-                        </button>
+                       <button wire:click="eliminar({{ $m->id }})" class="btn-delete">Eliminar</button>
                     </td>
                 </tr>
             @endforeach

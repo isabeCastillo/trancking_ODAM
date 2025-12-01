@@ -1,6 +1,11 @@
 <div>
     {{-- Close your eyes. Count to one. That is how long forever feels. --}}
     <h2>{{ $vehiculo ? 'Editar Vehículo' : 'Nuevo Vehículo' }}</h2>
+    @if (session('error'))
+    <div style="color:red;">
+        {{ session('error') }}
+    </div>
+    @endif
 
     <form wire:submit.prevent="save">
 
@@ -27,6 +32,18 @@
             <option>Disponible</option>
             <option>Mantenimiento</option>
         </select>
+    
+        <label>Motorista asignado</label>
+        <select wire:model="user_id">
+            <option value="">Sin motorista</option>
+
+        @foreach($motoristas as $m)
+            <option value="{{ $m->id }}">
+            {{ $m->name }}
+            </option>
+        @endforeach
+       </select>
+
 
         <button type="submit">Guardar</button>
     </form>

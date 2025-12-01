@@ -27,10 +27,4 @@ class MotoristasIndex extends Component
         User::find($id)?->delete();
         session()->flash('message', 'Motorista eliminado correctamente.');
     }
-    public function toggleEstado($id)
-    {
-        $motorista = User::findOrFail($id);
-        $motorista->estado = !$motorista->estado;
-        $motorista->save();
-    }
 }

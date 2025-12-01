@@ -10,7 +10,7 @@ class VehiculosForm extends Component
 {
     //Para relacionar motorista a un vehiuclo.
     public $user_id;
-    public $motoristas;
+    public $motoristas = [];
 
     public $vehiculo;
     public $placa, $marca, $modelo, $color, $capacidad, $tipo, $estado = 'Disponible';
@@ -42,8 +42,21 @@ class VehiculosForm extends Component
             'tipo' => 'required|string',
             'estado' => 'required|string',
             'user_id' => 'nullable|exists:users,id'
+
+            
         ]);
 
+        if ($this->user_id) {
+        $yaAsignado = Vehiculo::where('user_id', $this->user_id)
+            ->when($this->vehiculo, fn ($q) => $q->where('id', '!=', $this->vehiculo->id))
+            ->exists();
+
+        if ($yaAsignado) {
+            session()->flash('error', 'Este motorista ya tiene un vehículo asignado.');
+            return;
+            }
+        }
+        
         $data = [
             'placa' => $this->placa,
             'marca' => $this->marca,
@@ -52,7 +65,7 @@ class VehiculosForm extends Component
             'capacidad' => $this->capacidad,
             'tipo' => $this->tipo,
             'estado' => $this->estado,
-            'user_id' => $this->user_id,
+            'user_id' => $this->user_id ?: null,
         ];
 
         if ($this->vehiculo) {
