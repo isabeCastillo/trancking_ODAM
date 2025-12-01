@@ -2,21 +2,19 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Tracking ODAM</title>
+    <title>Tracking ODAM - Acceso</title>
     <link rel="icon" href="" type="image/png">
 
-    {{-- Estilos de Livewire --}}
+    {{-- Livewire Styles --}}
     @livewireStyles
 </head>
-<body>
-    <header>
-        <h1>Tracking ODAM</h1>
-    </header>
 
-    <main>
-        {{ $slot }}
-    </main>
+<body style="margin:0; padding:0; background:#edf1f4; min-height:100vh;">
 
+    {{-- Login se renderiza aquí --}}
+    {{ $slot }}
+
+    {{-- Livewire Scripts --}}
     <script src="{{ asset('vendor/livewire/livewire.js') }}"
             data-csrf="{{ csrf_token() }}"
             data-update-uri="/proyecto/public/livewire/update"
