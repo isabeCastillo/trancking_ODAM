@@ -10,6 +10,8 @@ use App\Livewire\MotoristasForm;
 use App\Livewire\VehiculosIndex;
 use App\Livewire\VehiculosForm;
 use App\Livewire\Auth\LoginForm;
+use App\Livewire\UsersIndex;
+use App\Livewire\UsersForm;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -40,6 +42,9 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
     Route::get('/envios', EnviosIndex::class)->name('envios.index');
     Route::get('/envios/crear', EnviosForm::class)->name('envios.create');
     Route::get('/envios/{envio}/editar', EnviosForm::class)->name('envios.edit');
+    Route::get('/usuarios', UsersIndex::class)->name('usuarios.index');
+    Route::get('/usuarios/crear', UsersForm::class)->name('usuarios.create');
+    Route::get('/usuarios/{user}/editar', UsersForm::class)->name('usuarios.edit');
 });
 
 //ruta para el motorista

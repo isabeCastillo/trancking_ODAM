@@ -19,6 +19,9 @@
     <p>
         <a href="{{ route('vehiculos.index') }}"> Gestionar vehiculos</a>
     </p>
+    <p>
+        <a href="{{ route('usuarios.index') }}">Gestionar usuarios</a>
+    </p>
 
     <form method="POST" action="{{ route('logout') }}">
         @csrf
