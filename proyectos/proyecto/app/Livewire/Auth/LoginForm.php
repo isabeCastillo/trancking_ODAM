@@ -25,8 +25,7 @@ class LoginForm extends Component {
         }
     }
 
-    public function login()
-    {
+    public function login() {
         $this->validate();
 
         $credentials = [
@@ -36,7 +35,6 @@ class LoginForm extends Component {
 
         if (Auth::attempt($credentials)) {
             session()->regenerate();
-
             if (auth()->user()->rol === 'admin') {
                 return redirect()->route('admin.dashboard');
             } else {

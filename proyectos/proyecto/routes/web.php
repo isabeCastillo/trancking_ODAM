@@ -16,20 +16,6 @@ Route::get('/', function () {
 });
 
 //login
-Route::get('/login', function () {
-    if (Auth::check()) {
-        //si ya está logueado, redirigir según rol
-        if (auth()->user()->rol === 'admin') {
-            return redirect()->route('admin.dashboard');
-        } else {
-            return redirect()->route('motorista.dashboard');
-        }
-    }
-
-    return view('auth.login');
-})->name('login');
-
-//procesa login
 Route::get('/login', LoginForm::class)
     ->name('login')
     ->middleware('guest');
@@ -44,35 +30,32 @@ Route::post('/logout', function (Request $request) {
     return redirect()->route('login');
 })->name('logout');
 
-//rutas del admin
+//ruta del admin
 Route::middleware(['auth', 'is_admin'])->group(function () {
 
     Route::get('/admin', function () {
         return view('dashboard.admin');
     })->name('admin.dashboard');
 
-    // rutas de envíos (estas deben estar dentro del admin)
     Route::get('/envios', EnviosIndex::class)->name('envios.index');
     Route::get('/envios/crear', EnviosForm::class)->name('envios.create');
     Route::get('/envios/{envio}/editar', EnviosForm::class)->name('envios.edit');
-
 });
 
-//rutas para motorista
+//ruta para el motorista
 Route::middleware(['auth', 'is_motorista'])->group(function () {
     Route::get('/motorista', function () {
         return view('dashboard.motorista');
     })->name('motorista.dashboard');
 });
 
+//Rutas para cualquier usuario autenticado
 Route::middleware(['auth'])->group(function () {
 
-    // rutas para creacion de motoristas
     Route::get('/motoristas', MotoristasIndex::class)->name('motoristas.index');
     Route::get('/motoristas/crear', MotoristasForm::class)->name('motoristas.create');
     Route::get('/motoristas/{user}/editar', MotoristasForm::class)->name('motoristas.edit');
 
-    // rutas para creacion de vehículos
     Route::get('/vehiculos', VehiculosIndex::class)->name('vehiculos.index');
     Route::get('/vehiculos/create', VehiculosForm::class)->name('vehiculos.create');
     Route::get('/vehiculos/{vehiculo}/editar', VehiculosForm::class)->name('vehiculos.edit');

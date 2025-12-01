@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Tracking ODAM</title>
-    <link rel="icon" href="" type="image/png">
+    <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
 
     {{-- Estilos de Livewire --}}
     @livewireStyles
