@@ -13,12 +13,15 @@ class EnviosIndex extends Component
 {
     use WithPagination;
 
+    
     protected string $paginationTheme = 'tailwind';
 
+    // Filtros
     public string $search      = '';
     public string $estado      = '';
     public string $motoristaId = '';
 
+   
     public function updatingSearch(): void
     {
         $this->resetPage();
@@ -47,18 +50,23 @@ class EnviosIndex extends Component
         $query = Envio::with(['motorista', 'vehiculo'])
             ->orderByDesc('created_at');
 
+       
         if ($this->search !== '') {
-            $query->where(function ($q) {
-                $q->where('codigo_tracking', 'like', '%' . $this->search . '%')
-                  ->orWhere('remitente_nombre', 'like', '%' . $this->search . '%')
-                  ->orWhere('destinatario_nombre', 'like', '%' . $this->search . '%');
+            $texto = '%' . $this->search . '%';
+
+            $query->where(function ($q) use ($texto) {
+                $q->where('codigo_tracking', 'like', $texto)
+                  ->orWhere('remitente_nombre', 'like', $texto)
+                  ->orWhere('destinatario_nombre', 'like', $texto);
             });
         }
 
+      
         if ($this->estado !== '') {
             $query->where('estado', $this->estado);
         }
 
+       
         if ($this->motoristaId !== '') {
             $query->where('id_motorista', $this->motoristaId);
         }
