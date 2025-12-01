@@ -1,6 +1,7 @@
 {{-- resources/views/components/layouts/admin.blade.php --}}
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Panel de Administración - Tracking ODAM</title>
@@ -38,7 +39,8 @@
         /* SIDEBAR */
         .sidebar {
             width: 250px;
-            background-color: #111827; /* gris muy oscuro casi negro */
+            background-color: #111827;
+            /* gris muy oscuro casi negro */
             color: #E5E7EB;
             display: flex;
             flex-direction: column;
@@ -203,96 +205,112 @@
             .admin-layout {
                 flex-direction: column;
             }
+
             .sidebar {
                 width: 100%;
                 flex-direction: row;
                 overflow-x: auto;
                 padding: 10px 12px;
             }
+
             .sidebar-nav {
                 display: flex;
                 gap: 6px;
             }
+
             .sidebar-footer {
                 display: none;
             }
         }
     </style>
 </head>
+
 <body>
 
-<div class="admin-layout">
+    <div class="admin-layout">
 
-    {{-- SIDEBAR --}}
-    <aside class="sidebar">
-        <div class="sidebar-logo">
-            <div class="sidebar-logo-circle">OD</div>
-            <div class="sidebar-logo-text">
-                <span class="sidebar-logo-title">Tracking ODAM</span>
-                <span class="sidebar-logo-subtitle">Panel de administración</span>
-            </div>
-        </div>
-
-        <nav class="sidebar-nav">
-            <div class="sidebar-section-title">Principal</div>
-
-            <a href="{{ route('admin.dashboard') }}"
-               class="sidebar-link {{ request()->routeIs('admin.dashboard') ? 'is-active' : '' }}">
-                <span class="icon">📊</span>
-                <span>Dashboard</span>
-            </a>
-
-            <div class="sidebar-section-title">Gestión</div>
-
-            <a href="{{ route('envios.index') }}"
-               class="sidebar-link {{ request()->routeIs('envios.*') ? 'is-active' : '' }}">
-                <span class="icon">📦</span>
-                <span>Envíos</span>
-            </a>
-
-            <a href="{{ route('motoristas.index') }}"
-               class="sidebar-link {{ request()->routeIs('motoristas.*') ? 'is-active' : '' }}">
-                <span class="icon">🚚</span>
-                <span>Motoristas</span>
-            </a>
-
-            <a href="{{ route('vehiculos.index') }}"
-               class="sidebar-link {{ request()->routeIs('vehiculos.*') ? 'is-active' : '' }}">
-                <span class="icon">🚛</span>
-                <span>Vehículos</span>
-            </a>
-
-            <a href="{{ route('usuarios.index') }}"
-               class="sidebar-link {{ request()->routeIs('usuarios.*') ? 'is-active' : '' }}">
-                <span class="icon">👤</span>
-                <span>Usuarios</span>
-            </a>
-        </nav>
-
-        <div class="sidebar-footer">
-            <div>Sesión activa</div>
-            @auth
-                <div style="font-size: 11px;">{{ auth()->user()->name }}</div>
-            @endauth
-
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit" class="logout-button">
-                    Cerrar sesión
-                </button>
-            </form>
-        </div>
-    </aside>
-
-    {{-- CONTENIDO PRINCIPAL --}}
-    <div class="admin-main">
-        <header class="admin-topbar">
-            <div class="topbar-title">
-                @yield('page-title', 'Panel de Administración')
+        {{-- SIDEBAR --}}
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <div class="sidebar-logo-circle">OD</div>
+                <div class="sidebar-logo-text">
+                    <span class="sidebar-logo-title">Tracking ODAM</span>
+                    <span class="sidebar-logo-subtitle">Panel de administración</span>
+                </div>
             </div>
 
-            <div class="topbar-user">
+            <nav class="sidebar-nav">
+                <div class="sidebar-section-title">Principal</div>
+
+                <a href="{{ route('admin.dashboard') }}"
+                    class="sidebar-link {{ request()->routeIs('admin.dashboard') ? 'is-active' : '' }}">
+                    <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bar-chart-line" viewBox="0 0 16 16">
+                            <path d="M11 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h1V7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7h1zm1 12h2V2h-2zm-3 0V7H7v7zm-5 0v-3H2v3z" />
+                        </svg></span>
+                    <span>Dashboard</span>
+                </a>
+
+                <div class="sidebar-section-title">Gestión</div>
+
+                <a href="{{ route('envios.index') }}"
+                    class="sidebar-link {{ request()->routeIs('envios.*') ? 'is-active' : '' }}">
+                    <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box" viewBox="0 0 16 16">
+                            <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5 8 5.961 14.154 3.5zM15 4.239l-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464z" />
+                        </svg></span>
+                    <span>Envíos</span>
+                </a>
+
+                <a href="{{ route('motoristas.index') }}"
+                    class="sidebar-link {{ request()->routeIs('motoristas.*') ? 'is-active' : '' }}">
+                    <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-check-fill" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M15.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L12.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0" />
+                            <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
+                        </svg></span>
+                    <span>Motoristas</span>
+                </a>
+
+                <a href="{{ route('vehiculos.index') }}"
+                    class="sidebar-link {{ request()->routeIs('vehiculos.*') ? 'is-active' : '' }}">
+                    <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-truck-front" viewBox="0 0 16 16">
+                            <path d="M5 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0m8 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m-6-1a1 1 0 1 0 0 2h2a1 1 0 1 0 0-2zM4 2a1 1 0 0 0-1 1v3.9c0 .625.562 1.092 1.17.994C5.075 7.747 6.792 7.5 8 7.5s2.925.247 3.83.394A1.008 1.008 0 0 0 13 6.9V3a1 1 0 0 0-1-1zm0 1h8v3.9q0 .002 0 0l-.002.004-.005.002h-.004C11.088 6.761 9.299 6.5 8 6.5s-3.088.26-3.99.406h-.003l-.005-.002L4 6.9q0 .002 0 0z" />
+                            <path d="M1 2.5A2.5 2.5 0 0 1 3.5 0h9A2.5 2.5 0 0 1 15 2.5v9c0 .818-.393 1.544-1 2v2a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5V14H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2a2.5 2.5 0 0 1-1-2zM3.5 1A1.5 1.5 0 0 0 2 2.5v9A1.5 1.5 0 0 0 3.5 13h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 12.5 1z" />
+                        </svg></span>
+                    <span>Vehículos</span>
+                </a>
+
+                <a href="{{ route('usuarios.index') }}"
+                    class="sidebar-link {{ request()->routeIs('usuarios.*') ? 'is-active' : '' }}">
+                    <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
+                            <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1zm-7.978-1L7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002-.014.002zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0M6.936 9.28a6 6 0 0 0-1.23-.247A7 7 0 0 0 5 9c-4 0-5 3-5 4q0 1 1 1h4.216A2.24 2.24 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816M4.92 10A5.5 5.5 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0m3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4" />
+                        </svg></span>
+                    <span>Usuarios</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div>Sesión activa</div>
                 @auth
+                <div style="font-size: 11px;">{{ auth()->user()->name }}</div>
+                @endauth
+
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="logout-button">
+                        Cerrar sesión
+                    </button>
+                </form>
+            </div>
+        </aside>
+
+        {{-- CONTENIDO PRINCIPAL --}}
+        <div class="admin-main">
+            <header class="admin-topbar">
+                <div class="topbar-title">
+                    @yield('page-title', 'Panel de Administración')
+                </div>
+
+                <div class="topbar-user">
+                    @auth
                     <div class="topbar-avatar">
                         {{ strtoupper(mb_substr(auth()->user()->name, 0, 1)) }}
                     </div>
@@ -300,16 +318,17 @@
                         <div>{{ auth()->user()->name }}</div>
                         <div class="topbar-role">Administrador</div>
                     </div>
-                @endauth
-            </div>
-        </header>
+                    @endauth
+                </div>
+            </header>
 
-        <main class="admin-content">
-            {{ $slot }}
-        </main>
+            <main class="admin-content">
+                {{ $slot }}
+            </main>
+        </div>
     </div>
-</div>
 
-@livewireScripts
+    @livewireScripts
 </body>
+
 </html>

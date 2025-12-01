@@ -81,9 +81,17 @@
             color: var(--color-text-subtle);
         }
 
-        .kpi-pendiente { color: #F59E0B; }
-        .kpi-en-ruta  { color: #3B82F6; }
-        .kpi-entregado { color: #10B981; }
+        .kpi-pendiente {
+            color: #F59E0B;
+        }
+
+        .kpi-en-ruta {
+            color: #3B82F6;
+        }
+
+        .kpi-entregado {
+            color: #10B981;
+        }
 
         .main-grid {
             display: grid;
@@ -159,9 +167,20 @@
             text-transform: capitalize;
         }
 
-        .status-pendiente { background-color: #FEF3C7; color: #F59E0B; }
-        .status-en-ruta  { background-color: #DBEAFE; color: #3B82F6; }
-        .status-entregado { background-color: #D1FAE5; color: #10B981; }
+        .status-pendiente {
+            background-color: #FEF3C7;
+            color: #F59E0B;
+        }
+
+        .status-en-ruta {
+            background-color: #DBEAFE;
+            color: #3B82F6;
+        }
+
+        .status-entregado {
+            background-color: #D1FAE5;
+            color: #10B981;
+        }
 
         .link-accion {
             color: var(--color-primary);
@@ -245,7 +264,12 @@
             </div>
 
             <button wire:click="actualizarDatos" class="refresh-button">
-                🔄 Actualizar datos
+                <span class="login-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z" />
+                        <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466" />
+                    </svg>
+                </span> Actualizar datos
             </button>
         </div>
 
@@ -310,55 +334,55 @@
                     </thead>
                     <tbody>
                         @forelse ($enviosRecientes as $envio)
-                            <tr>
-                                <td>
-                                    <strong>{{ $envio->codigo_tracking ?? ('ENV-' . $envio->id) }}</strong><br>
-                                    <span style="font-size:11px;color:var(--color-text-subtle);">
-                                        {{ \Carbon\Carbon::parse($envio->created_at)->format('d/m/Y H:i') }}
-                                    </span>
-                                </td>
-                                <td>
-                                    {{ $envio->destinatario_nombre }}<br>
-                                    <span style="font-size:11px;color:var(--color-text-subtle);">
-                                        {{ $envio->destinatario_direccion }}
-                                    </span>
-                                </td>
-                                <td>
-                                    @if ($envio->id_motorista && $envio->relationLoaded('motorista') && $envio->motorista)
-                                        {{ $envio->motorista->nombre }}
-                                    @elseif ($envio->id_motorista)
-                                        #{{ $envio->id_motorista }}
-                                    @else
-                                        <span style="font-size:11px;color:#F59E0B;">Sin asignar</span>
-                                    @endif
-                                </td>
-                                <td>
-                                    @php $estado = strtolower($envio->estado); @endphp
-                                    <span class="status-badge
+                        <tr>
+                            <td>
+                                <strong>{{ $envio->codigo_tracking ?? ('ENV-' . $envio->id) }}</strong><br>
+                                <span style="font-size:11px;color:var(--color-text-subtle);">
+                                    {{ \Carbon\Carbon::parse($envio->created_at)->format('d/m/Y H:i') }}
+                                </span>
+                            </td>
+                            <td>
+                                {{ $envio->destinatario_nombre }}<br>
+                                <span style="font-size:11px;color:var(--color-text-subtle);">
+                                    {{ $envio->destinatario_direccion }}
+                                </span>
+                            </td>
+                            <td>
+                                @if ($envio->id_motorista && $envio->relationLoaded('motorista') && $envio->motorista)
+                                {{ $envio->motorista->nombre }}
+                                @elseif ($envio->id_motorista)
+                                #{{ $envio->id_motorista }}
+                                @else
+                                <span style="font-size:11px;color:#F59E0B;">Sin asignar</span>
+                                @endif
+                            </td>
+                            <td>
+                                @php $estado = strtolower($envio->estado); @endphp
+                                <span class="status-badge
                                         {{ $estado === 'pendiente' ? 'status-pendiente' : '' }}
                                         {{ $estado === 'en ruta' ? 'status-en-ruta' : '' }}
                                         {{ $estado === 'entregado' ? 'status-entregado' : '' }}">
-                                        {{ ucfirst($estado) }}
-                                    </span>
-                                </td>
-                                <td>
-                                    @if (is_null($envio->id_motorista))
-                                        <a href="{{ route('envios.edit', $envio->id) }}" class="link-accion">
-                                            Asignar
-                                        </a>
-                                    @else
-                                        <a href="{{ route('envios.edit', $envio->id) }}" class="link-accion">
-                                            Ver / Editar
-                                        </a>
-                                    @endif
-                                </td>
-                            </tr>
+                                    {{ ucfirst($estado) }}
+                                </span>
+                            </td>
+                            <td>
+                                @if (is_null($envio->id_motorista))
+                                <a href="{{ route('envios.edit', $envio->id) }}" class="link-accion">
+                                    Asignar
+                                </a>
+                                @else
+                                <a href="{{ route('envios.edit', $envio->id) }}" class="link-accion">
+                                    Ver / Editar
+                                </a>
+                                @endif
+                            </td>
+                        </tr>
                         @empty
-                            <tr>
-                                <td colspan="5" style="text-align:center;padding:15px;">
-                                    No hay envíos registrados aún.
-                                </td>
-                            </tr>
+                        <tr>
+                            <td colspan="5" style="text-align:center;padding:15px;">
+                                No hay envíos registrados aún.
+                            </td>
+                        </tr>
                         @endforelse
                     </tbody>
                 </table>
@@ -377,27 +401,27 @@
 
                     <ul class="mini-list">
                         @forelse ($enviosPorTipo as $tipo)
-                            @php
-                                $porcentaje = $totalEnvios > 0 ? round(($tipo->total / $totalEnvios) * 100) : 0;
-                            @endphp
-                            <li>
-                                <div>
-                                    <strong>{{ $tipo->tipo_envio ?? 'Sin especificar' }}</strong><br>
-                                    <span style="font-size:11px;color:var(--color-text-subtle);">
-                                        {{ $tipo->total }} envíos
-                                    </span>
+                        @php
+                        $porcentaje = $totalEnvios > 0 ? round(($tipo->total / $totalEnvios) * 100) : 0;
+                        @endphp
+                        <li>
+                            <div>
+                                <strong>{{ $tipo->tipo_envio ?? 'Sin especificar' }}</strong><br>
+                                <span style="font-size:11px;color:var(--color-text-subtle);">
+                                    {{ $tipo->total }} envíos
+                                </span>
+                            </div>
+                            <div>
+                                <div class="progress-bar-bg">
+                                    <div class="progress-bar-fill" style="width: {{ $porcentaje }}%;"></div>
                                 </div>
-                                <div>
-                                    <div class="progress-bar-bg">
-                                        <div class="progress-bar-fill" style="width: {{ $porcentaje }}%;"></div>
-                                    </div>
-                                    <div style="font-size:11px;text-align:right;color:var(--color-text-subtle);">
-                                        {{ $porcentaje }}%
-                                    </div>
+                                <div style="font-size:11px;text-align:right;color:var(--color-text-subtle);">
+                                    {{ $porcentaje }}%
                                 </div>
-                            </li>
+                            </div>
+                        </li>
                         @empty
-                            <li>No hay datos todavía.</li>
+                        <li>No hay datos todavía.</li>
                         @endforelse
                     </ul>
                 </div>
@@ -414,16 +438,16 @@
 
                     <ul class="mini-list">
                         @forelse ($enviosPorMotorista as $row)
-                            <li>
-                                <div><strong>{{ $row->motorista }}</strong></div>
-                                <div style="font-size:12px;color:var(--color-text-subtle);">
-                                    {{ $row->total }} envíos
-                                </div>
-                            </li>
+                        <li>
+                            <div><strong>{{ $row->motorista }}</strong></div>
+                            <div style="font-size:12px;color:var(--color-text-subtle);">
+                                {{ $row->total }} envíos
+                            </div>
+                        </li>
                         @empty
-                            <li style="font-size:12px;">
-                                Aún no hay datos de motoristas o la tabla no está configurada.
-                            </li>
+                        <li style="font-size:12px;">
+                            Aún no hay datos de motoristas o la tabla no está configurada.
+                        </li>
                         @endforelse
                     </ul>
                 </div>
@@ -439,16 +463,16 @@
 
                     <div class="chart-placeholder">
                         @if ($enviosPorDia->count())
-                            <div>
-                                @foreach ($enviosPorDia as $dia)
-                                    <div style="margin-bottom:4px;">
-                                        <strong>{{ \Carbon\Carbon::parse($dia->fecha)->format('d/m') }}:</strong>
-                                        {{ $dia->total }} envíos
-                                    </div>
-                                @endforeach
+                        <div>
+                            @foreach ($enviosPorDia as $dia)
+                            <div style="margin-bottom:4px;">
+                                <strong>{{ \Carbon\Carbon::parse($dia->fecha)->format('d/m') }}:</strong>
+                                {{ $dia->total }} envíos
                             </div>
+                            @endforeach
+                        </div>
                         @else
-                            Aún no hay suficientes datos para la última semana.
+                        Aún no hay suficientes datos para la última semana.
                         @endif
                     </div>
                 </div>
@@ -466,20 +490,20 @@
 
                     <div class="map-placeholder">
                         @if ($enviosPorCiudad->count())
-                            <div>
-                                @foreach ($enviosPorCiudad as $ciudad)
-                                    <div style="margin-bottom:4px;">
-                                        <strong>{{ $ciudad->destinatario_ciudad }}:</strong>
-                                        {{ $ciudad->total }} envíos
-                                    </div>
-                                @endforeach
-                                <p style="margin-top:8px;font-size:11px;">
-                                    Aquí se puede integrar un mapa con Leaflet más adelante.
-                                </p>
+                        <div>
+                            @foreach ($enviosPorCiudad as $ciudad)
+                            <div style="margin-bottom:4px;">
+                                <strong>{{ $ciudad->destinatario_ciudad }}:</strong>
+                                {{ $ciudad->total }} envíos
                             </div>
+                            @endforeach
+                            <p style="margin-top:8px;font-size:11px;">
+                                Aquí se puede integrar un mapa con Leaflet más adelante.
+                            </p>
+                        </div>
                         @else
-                            Cuando exista un campo de ciudad/zona en la tabla <code>envios</code>,
-                            aquí aparecerán los totales por zona (y luego el mapa).
+                        Cuando exista un campo de ciudad/zona en la tabla <code>envios</code>,
+                        aquí aparecerán los totales por zona (y luego el mapa).
                         @endif
                     </div>
                 </div>
