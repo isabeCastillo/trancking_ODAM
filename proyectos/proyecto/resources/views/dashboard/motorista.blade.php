@@ -22,6 +22,10 @@
     @else
         <p>No tienes un vehículo asignado.</p>
     @endif
+
+    <a href="{{ url('motorista/envios') }}">
+    <button>Ver Mis Envíos</button></a>
+
 @endif
 
 

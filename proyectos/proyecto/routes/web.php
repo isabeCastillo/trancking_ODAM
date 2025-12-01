@@ -65,3 +65,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/vehiculos/create', VehiculosForm::class)->name('vehiculos.create');
     Route::get('/vehiculos/{vehiculo}/editar', VehiculosForm::class)->name('vehiculos.edit');
 });
+
+Route::middleware(['auth', 'is_motorista'])->group(function () {
+
+    Route::get('/motorista', function () {
+        return view('dashboard.motorista');
+    })->name('motorista.dashboard');
+
+    Route::get('/motorista/envios', \App\Livewire\MotoristaEnvios::class)
+        ->name('motorista.envios');
+
+});
+

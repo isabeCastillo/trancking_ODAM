@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Vehiculo;
+use App\Models\HistorialEnvio;
 
 class Envio extends Model
 {
@@ -33,5 +34,10 @@ class Envio extends Model
     public function vehiculo()
     {
         return $this->belongsTo(Vehiculo::class, 'id_vehiculo');
+    }
+
+     public function historial()
+    {
+        return $this->hasMany(HistorialEnvio::class, 'envio_id');
     }
 }
