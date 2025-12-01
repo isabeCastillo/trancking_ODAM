@@ -32,9 +32,7 @@ class VehiculosForm extends Component
         }
     }
 
-    public function save()
-    {
-
+    public function save(){
         $this->validate([
             'placa' => 'required|string',
             'marca' => 'required|string',

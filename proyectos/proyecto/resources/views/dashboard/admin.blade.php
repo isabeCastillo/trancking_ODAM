@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <title>Panel Admin</title>
 
-    {{-- Livewire Styles --}}
-    @livewireStyles
 </head>
 <body>
     <h1>Panel de administrador</h1>
@@ -26,8 +24,5 @@
         @csrf
         <button type="submit">Cerrar sesión</button>
     </form>
-
-    {{-- Livewire Scripts --}}
-    @livewireScripts
 </body>
 </html>

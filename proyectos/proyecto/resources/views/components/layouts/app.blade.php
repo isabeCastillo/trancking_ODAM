@@ -13,11 +13,13 @@
     </header>
 
     <main>
-        
         {{ $slot }}
     </main>
 
-    {{-- Scripts de Livewire --}}
-    @livewireScripts
+    <script src="{{ asset('vendor/livewire/livewire.js') }}"
+            data-csrf="{{ csrf_token() }}"
+            data-update-uri="/proyecto/public/livewire/update"
+            data-navigate-once="true"></script>
+
 </body>
 </html>

@@ -16,7 +16,8 @@ class Vehiculo extends Model
         'color',
         'capacidad',
         'tipo',
-        'estado'
+        'estado',
+        'user_id',
     ];
 
     public function envios()
