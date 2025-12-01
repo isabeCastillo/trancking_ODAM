@@ -1,4 +1,5 @@
-<div>
+{{-- resources/views/livewire/admin/dashboard.blade.php --}}
+<x-layouts.admin>
     <style>
     :root {
         --color-primary: #B91C1C;
@@ -349,4 +350,4 @@
             </div>
         </div>
     </div>
-</div>
+</x-layouts.admin>

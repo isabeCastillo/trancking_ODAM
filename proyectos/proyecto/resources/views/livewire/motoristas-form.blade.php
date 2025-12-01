@@ -1,5 +1,5 @@
-<div>
-    {{-- Stop trying to control. --}}
+{{-- resources/views/livewire/admin/dashboard.blade.php --}}
+<x-layouts.admin>
     <h2>{{ $user ? 'Editar Motorista' : 'Nuevo Motorista' }}</h2>
 
     <form wire:submit.prevent="save">
@@ -18,4 +18,4 @@
 
         <button type="submit">Guardar</button>
     </form>
-</div>
+</x-layouts.admin>

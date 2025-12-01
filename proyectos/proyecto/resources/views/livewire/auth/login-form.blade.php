@@ -362,7 +362,7 @@
             {{-- Panel de Login (Formulario) --}}
             <div class="login-card">
                 <div class="login-header">
-                    <span class="login-icon">🎁</span> {{-- Icono navideño/paquete --}}
+                    <span class="login-icon">🎁</span>
                     <h1 class="login-title">Bienvenido</h1>
                 </div>
 

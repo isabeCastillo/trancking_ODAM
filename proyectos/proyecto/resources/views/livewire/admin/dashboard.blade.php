@@ -3,7 +3,7 @@
 <x-layouts.admin>
     <style>
         .dashboard-wrapper {
-            padding: 0; /* ya hay padding en admin-content */
+            padding: 0;
         }
 
         .dashboard-header-row {
