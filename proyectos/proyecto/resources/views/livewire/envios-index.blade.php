@@ -301,7 +301,7 @@
                     <select wire:model.live="estado">
                         <option value="">Todos los estados</option>
                         <option value="pendiente">Pendiente</option>
-                        <option value="en transito">En tránsito</option>
+                        <option value="en_transito">En tránsito</option>
                         <option value="entregado">Entregado</option>
                         <option value="cancelado">Cancelado</option>
                     </select>
