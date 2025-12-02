@@ -208,7 +208,7 @@
         color: var(--color-primary);
     }
 
-    /*error, logo y resposivo*/
+
     .login-error {
         background: #fee2e2;
         border: 1px solid #fecaca;
