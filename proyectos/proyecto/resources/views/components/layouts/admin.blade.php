@@ -38,12 +38,12 @@
 
         /* SIDEBAR */
         .sidebar {
-            width: 250px;
+            width: 230px;
             background-color: #111827;
             color: #E5E7EB;
             display: flex;
             flex-direction: column;
-            padding: 20px 18px;
+            padding: 18px 16px;
         }
 
         .sidebar-logo {
@@ -126,7 +126,7 @@
         }
 
         .sidebar-footer {
-            margin-top: 10px;
+            margin-top: auto;
             border-top: 1px solid #1F2937;
             padding-top: 10px;
             font-size: 12px;
