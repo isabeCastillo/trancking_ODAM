@@ -5,72 +5,50 @@ namespace App\Livewire\Motorista;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\Envio;
+use App\Models\HistorialEnvio;
 use Illuminate\Support\Facades\Auth;
 
 class Dashboard extends Component
 {
     use WithFileUploads;
 
-    public $envios = [];
+    public $envios;
     public $envioSeleccionado = null;
-
-    public $estado = '';
-    public $comentario = '';
-    public $foto; // evidencia
+    public $estado;
+    public $comentario;
+    public $foto;
 
     protected $rules = [
-        'estado'     => 'required|in:pendiente,en ruta,entregado',
+        'estado' => 'required|in:pendiente,en ruta,entregado',
         'comentario' => 'nullable|string|max:500',
-        'foto'       => 'nullable|image|max:2048', // 2MB
+        'foto' => 'nullable|image|max:2048',
     ];
 
     public function mount()
     {
-        $this->cargarEnvios();
+        $this->envios = Envio::where('id_motorista', Auth::id())->get();
     }
 
-    protected function motoristaId()
+    public function seleccionarEnvio($idEnvio)
     {
-        // Ajusta esto según cómo relaciones usuario ↔ motorista
-        return Auth::user()->id_motorista ?? Auth::id();
-    }
+        $this->envioSeleccionado = Envio::where('id_motorista', Auth::id())
+            ->findOrFail($idEnvio);
 
-    public function cargarEnvios()
-    {
-        $this->envios = Envio::where('id_motorista', $this->motoristaId())
-            ->orderByRaw("FIELD(estado, 'pendiente','en ruta','entregado')")
-            ->orderByDesc('created_at')
-            ->get();
-
-        if ($this->envios->count() && !$this->envioSeleccionado) {
-            $this->seleccionarEnvio($this->envios->first()->id);
-        }
-    }
-
-    public function seleccionarEnvio($envioId)
-    {
-        $envio = Envio::where('id', $envioId)
-            ->where('id_motorista', $this->motoristaId())
-            ->firstOrFail();
-
-        $this->envioSeleccionado = $envio;
-        $this->estado = $envio->estado;
+        $this->estado = $this->envioSeleccionado->estado;
         $this->comentario = '';
         $this->foto = null;
     }
 
     public function actualizarEnvio()
     {
+        $this->validate();
+
         if (!$this->envioSeleccionado) {
             return;
         }
 
-        $this->validate();
-
-        $envio = Envio::where('id', $this->envioSeleccionado->id)
-            ->where('id_motorista', $this->motoristaId())
-            ->firstOrFail();
-
+        $envio = $this->envioSeleccionado;
+        $estadoAnterior = $envio->estado;
         $envio->estado = $this->estado;
         $envio->save();
 
@@ -79,18 +57,22 @@ class Dashboard extends Component
             $rutaFoto = $this->foto->store('evidencias', 'public');
         }
 
-        BitacoraEnvio::create([
-            'envio_id'    => $envio->id,
-            'motorista_id'=> $this->motoristaId(),
-            'estado'      => $this->estado,
-            'comentario'  => $this->comentario,
-            'foto_path'   => $rutaFoto,
-         ]);
+        HistorialEnvio::create([
+            'envio_id' => $envio->id,
+            'id_usuario' => Auth::id(),
+            'estado_anterior' => $estadoAnterior,
+            'estado_nuevo' => $this->estado,
+            'comentario' => $this->comentario,
+            'evidencia_foto' => $rutaFoto,
+            'fecha_hora' => now(),
+        ]);
 
-        $this->cargarEnvios();
-        $this->seleccionarEnvio($envio->id);
+        session()->flash('mensaje', 'Envío actualizado y registrado en la bitácora.');
 
-        session()->flash('mensaje', 'Envío actualizado correctamente.');
+        $this->envios = Envio::where('id_motorista', Auth::id())->get();
+        $this->envioSeleccionado = Envio::find($envio->id);
+        $this->comentario = '';
+        $this->foto = null;
     }
 
     public function render()
@@ -98,3 +80,4 @@ class Dashboard extends Component
         return view('livewire.motorista.dashboard');
     }
 }
+
