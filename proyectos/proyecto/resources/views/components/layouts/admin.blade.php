@@ -40,7 +40,6 @@
         .sidebar {
             width: 250px;
             background-color: #111827;
-            /* gris muy oscuro casi negro */
             color: #E5E7EB;
             display: flex;
             flex-direction: column;
@@ -51,20 +50,26 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .sidebar-logo-circle {
-            width: 34px;
-            height: 34px;
+            width: 40px;
+            height: 40px;
             border-radius: 999px;
-            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+            overflow: hidden;
+            background: #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 800;
-            color: white;
-            font-size: 16px;
+            border: 2px solid #F87171;
+        }
+
+        .sidebar-logo-img {
+            width: 80%;
+            height: 80%;
+            object-fit: contain;
+            display: block;
         }
 
         .sidebar-logo-text {
@@ -80,10 +85,6 @@
         .sidebar-logo-subtitle {
             font-size: 11px;
             color: #9CA3AF;
-        }
-
-        .sidebar-nav {
-            flex: 1;
         }
 
         .sidebar-section-title {
@@ -232,10 +233,12 @@
         {{-- SIDEBAR --}}
         <aside class="sidebar">
             <div class="sidebar-logo">
-                <div class="sidebar-logo-circle">OD</div>
+                <div class="sidebar-logo-circle">
+                    <img src="{{ asset('img/logo.png') }}" alt="Logo" class="sidebar-logo-img">
+                </div>
                 <div class="sidebar-logo-text">
                     <span class="sidebar-logo-title">Tracking ODAM</span>
-                    <span class="sidebar-logo-subtitle">Panel de administración</span>
+                    <span class="sidebar-logo-subtitle">Panel de Administración</span>
                 </div>
             </div>
 

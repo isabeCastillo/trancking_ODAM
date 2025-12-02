@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Livewire\Auth\LoginForm;
 use App\Livewire\Admin\Dashboard as AdminDashboard;
+use App\Livewire\Motorista\Dashboard as MotoristaDashboard;
 use App\Livewire\EnviosIndex;
 use App\Livewire\EnviosForm;
 use App\Livewire\MotoristasIndex;
@@ -60,10 +61,8 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
 });
 
 Route::middleware(['auth', 'is_motorista'])->group(function () {
-
-    Route::get('/motorista', function () {
-        return view('dashboard.motorista');
-    })->name('motorista.dashboard');
+    Route::get('/motorista', MotoristaDashboard::class)
+        ->name('motorista.dashboard');
 
     Route::get('/motorista/envios', MotoristaEnvios::class)
         ->name('motorista.envios');
