@@ -51,4 +51,10 @@ class User extends Authenticatable
    public function vehiculo() {
     return $this->hasOne(Vehiculo::class, 'user_id');
    }
+   public function enviosAsignados(){
+        return $this->hasMany(Envio::class, 'id_motorista');
+    }
+    public function historialEnvios(){
+        return $this->hasMany(HistorialEnvio::class, 'id_usuario');
+    }
 }

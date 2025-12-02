@@ -37,4 +37,8 @@ class Envio extends Model
     {
         return $this->belongsTo(Vehiculo::class, 'id_vehiculo');
     }
+    public function historial()
+    {
+        return $this->hasMany(HistorialEnvio::class, 'envio_id');
+    }
 }
