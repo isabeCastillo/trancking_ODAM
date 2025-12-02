@@ -14,6 +14,7 @@ use App\Livewire\VehiculosIndex;
 use App\Livewire\VehiculosForm;
 use App\Livewire\UsersIndex;
 use App\Livewire\UsersForm;
+use App\Livewire\MotoristaEnvios;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -59,7 +60,12 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
 });
 
 Route::middleware(['auth', 'is_motorista'])->group(function () {
+
     Route::get('/motorista', function () {
         return view('dashboard.motorista');
     })->name('motorista.dashboard');
+
+    Route::get('/motorista/envios', MotoristaEnvios::class)
+        ->name('motorista.envios');
+
 });
