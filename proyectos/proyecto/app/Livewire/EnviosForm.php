@@ -66,7 +66,7 @@ class EnviosForm extends Component
             'tipo_envio'             => ['nullable', 'string', 'max:100'],
             'fecha_estimada'         => ['nullable', 'date'],
 
-            'estado'                 => ['required', Rule::in(['pendiente', 'en_transito', 'entregado', 'cancelado'])],
+            'estado'                 => ['required', Rule::in(['pendiente', ' en transito', 'entregado', 'cancelado'])],
 
             'id_motorista'           => ['nullable', 'exists:users,id'],
             'id_vehiculo'            => ['nullable', 'exists:vehiculos,id'],
