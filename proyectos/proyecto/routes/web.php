@@ -16,6 +16,7 @@ use App\Livewire\VehiculosForm;
 use App\Livewire\UsersIndex;
 use App\Livewire\UsersForm;
 use App\Livewire\MotoristaEnvios;
+use App\Livewire\Tracking;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -58,6 +59,7 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
     Route::get('/vehiculos', VehiculosIndex::class)->name('vehiculos.index');
     Route::get('/vehiculos/create', VehiculosForm::class)->name('vehiculos.create');
     Route::get('/vehiculos/{vehiculo}/editar', VehiculosForm::class)->name('vehiculos.edit');
+    
 });
 
 Route::middleware(['auth', 'is_motorista'])->group(function () {
@@ -67,4 +69,7 @@ Route::middleware(['auth', 'is_motorista'])->group(function () {
     Route::get('/motorista/envios', MotoristaEnvios::class)
         ->name('motorista.envios');
 
+    Route::get('/tracking', Tracking::class)->name('tracking');
+
 });
+
