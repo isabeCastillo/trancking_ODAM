@@ -8,6 +8,8 @@ use Livewire\Component;
 class LoginForm extends Component {
     public $username = '';
     public $password = '';
+    public $mostrarPassword = false;
+
 
     protected $rules = [
         'username' => 'required|string',

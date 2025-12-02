@@ -186,6 +186,28 @@
         font-size: 13px;
         color: var(--color-text-subtle);
     }
+        .password-wrapper {
+        position: relative;
+        width: 100%;
+    }
+
+    .toggle-password {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        font-size: 12px;
+        color: var(--color-text-subtle);
+        padding: 0;
+    }
+
+    .toggle-password:hover {
+        color: var(--color-primary);
+    }
+
     /*error, logo y resposivo*/
     .login-error {
         background: #fee2e2;
@@ -393,11 +415,19 @@
                     {{-- Campo Contraseña --}}
                     <div class="form-group">
                         <label for="password" class="form-label">Contraseña</label>
-                        <input type="password" id="password" class="form-input" wire:model="password" placeholder="••••••••" required>
+
+                        <div class="password-wrapper">
+                            <input type="{{ $mostrarPassword ? 'text' : 'password' }}" id="password" class="form-input" wire:model="password" placeholder="••••••••" required>
+                            <button type="button" class="toggle-password" wire:click="$toggle('mostrarPassword')">
+                                {{ $mostrarPassword ? 'Ocultar' : 'Mostrar' }}
+                            </button>
+                        </div>
+
                         @error('password')
                             <p class="input-error-text">{{ $message }}</p>
                         @enderror
                     </div>
+
 
                     {{-- Botón de Iniciar Sesión (Rojo con efecto de elevación) --}}
                     <button type="submit" class="login-button">
