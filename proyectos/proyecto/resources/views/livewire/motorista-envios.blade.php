@@ -8,33 +8,38 @@
         </div>
     @endif
 
-    <table border="1" cellpadding="8" style="width: 100%; margin-bottom: 25px;">
-        <thead>
+    <table>
+    <thead>
+        <tr>
+            <th>Código</th>
+            <th>Destinatario</th>
+            <th>Dirección</th>
+            <th>Estado</th>
+            <th>Acción</th>
+            <th>Historial</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($envios as $e)
             <tr>
-                <th>Código</th>
-                <th>Destinatario</th>
-                <th>Dirección</th>
-                <th>Estado</th>
-                <th>Acción</th>
+                <td>{{ $e->codigo_tracking }}</td>
+                <td>{{ $e->destinatario_nombre }}</td>
+                <td>{{ $e->destinatario_direccion }}</td>
+                <td>{{ $e->estado }}</td>
+                <td>
+                    <button wire:click="seleccionarEnvio({{ $e->id }})">
+                        Actualizar
+                    </button>
+                </td>
+                <td>
+                    <a href="{{ route('motorista.envios.historial', $e->id) }}">
+                        Ver historial
+                    </a>
+                </td>
             </tr>
-        </thead>
-
-        <tbody>
-            @foreach ($envios as $e)
-                <tr>
-                    <td>{{ $e->codigo_tracking }}</td>
-                    <td>{{ $e->destinatario_nombre }}</td>
-                    <td>{{ $e->destinatario_direccion }}</td>
-                    <td>{{ $e->estado }}</td>
-                    <td>
-                        <button wire:click="seleccionarEnvio({{ $e->id }})">
-                            Actualizar
-                        </button>
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
+        @endforeach
+    </tbody>
+</table>
 
     {{-- FORMULARIO DE ACTUALIZACIÓN --}}
     @if ($selectedEnvio)
