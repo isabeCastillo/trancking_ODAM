@@ -1,136 +1,347 @@
-{{-- resources/views/livewire/admin/dashboard.blade.php --}}
+{{-- resources/views/livewire/admin/crear-editar-envio.blade.php --}}
 <x-layouts.admin>
-    {{-- Success is as dangerous as failure. --}}
-    <h2>{{ $envio && $envio->exists ? 'Editar envío' : 'Crear envío' }}</h2>
+    <style>
+        :root {
+            --color-primary: #B91C1C;
+            --color-primary-dark: #991B1B;
+            --color-bg-light: #F9FAFB;
+            --color-text-dark: #374151;
+            --color-text-subtle: #6B7280;
+            --color-border: #E5E7EB;
+            --color-success: #10B981;
+            --color-danger: #EF4444;
+            --color-motorista: #3B82F6; 
+        }
 
-    @if (session('message'))
-        <div style="color: green; margin-bottom: 10px;">
-            {{ session('message') }}
-        </div>
-    @endif
+       
+        .form-container {
+            padding: 20px 30px;
+            background-color: var(--color-bg-light);
+            min-height: 100vh;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
 
-    {{-- Para ver si hay errores de validación --}}
-    @if ($errors->any())
-        <ul style="color:red">
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    @endif
+        .title-header {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--color-text-dark);
+            margin-bottom: 30px;
+        }
 
-    <form wire:submit.prevent="guardar">
-        {{-- REMITENTE --}}
-        <fieldset style="margin-bottom: 15px;">
-            <legend>Remitente</legend>
+        .card-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 1px 10px rgba(0, 0, 0, 0.05);
+            padding: 30px; 
+        }
 
-            <div>
-                <label>Nombre *</label><br>
-                <input type="text" wire:model="remitente_nombre">
-            </div>
+       
+        .alert-success {
+            background-color: #D1FAE5;
+            color: var(--color-success);
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid #A7F3D0;
+            margin-bottom: 20px;
+            font-weight: 600;
+            font-size: 14px;
+        }
 
-            <div>
-                <label>Teléfono</label><br>
-                <input type="text" wire:model="remitente_telefono">
-            </div>
+        .alert-errors-list {
+            color: var(--color-danger);
+            list-style: disc;
+            margin: 0 0 20px 20px;
+            padding: 0;
+            font-size: 14px;
+        }
+        .alert-errors-list li {
+            margin-bottom: 5px;
+        }
 
-            <div>
-                <label>Dirección</label><br>
-                <input type="text" wire:model="remitente_direccion">
-            </div>
-        </fieldset>
+       
+        form fieldset {
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 25px;
+        }
 
-        {{-- DESTINATARIO --}}
-        <fieldset style="margin-bottom: 15px;">
-            <legend>Destinatario</legend>
+        form legend {
+            font-weight: 700;
+            color: var(--color-text-dark);
+            font-size: 16px;
+            padding: 0 10px;
+            margin-left: -5px;
+        }
 
-            <div>
-                <label>Nombre *</label><br>
-                <input type="text" wire:model="destinatario_nombre">
-            </div>
+        form > div {
+            margin-bottom: 15px; 
+        }
 
-            <div>
-                <label>Teléfono</label><br>
-                <input type="text" wire:model="destinatario_telefono">
-            </div>
+        form fieldset > div {
+            margin-bottom: 15px;
+        }
 
-            <div>
-                <label>Dirección</label><br>
-                <input type="text" wire:model="destinatario_direccion">
-            </div>
-        </fieldset>
+        form label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-text-dark);
+        }
 
-        {{-- PAQUETE --}}
-        <fieldset style="margin-bottom: 15px;">
-            <legend>Datos del paquete</legend>
+        form input[type="text"],
+        form input[type="number"],
+        form input[type="date"],
+        form textarea,
+        form select {
+            width: 100%;
+            padding: 9px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--color-border);
+            font-size: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.06);
+            box-sizing: border-box; 
+        }
 
-            <div>
-                <label>Descripción</label><br>
-                <textarea wire:model="descripcion" rows="3"></textarea>
-            </div>
+        form input:focus,
+        form select:focus,
+        form textarea:focus {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 2px rgba(185, 28, 28, 0.2);
+        }
 
-            <div>
-                <label>Peso (kg)</label><br>
-                <input type="number" step="0.01" wire:model="peso">
-            </div>
+        form textarea {
+            resize: vertical;
+        }
 
-            <div>
-                <label>Tipo de envío</label><br>
-                <input type="text" wire:model="tipo_envio" placeholder="Sobre, caja, frágil, etc.">
-            </div>
+        
+        .fieldset-group {
+            display: grid;
+            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
 
-            <div>
-                <label>Fecha estimada de entrega</label><br>
-                <input type="date" wire:model="fecha_estimada">
-            </div>
-        </fieldset>
+        form fieldset > .fieldset-group {
+            margin-bottom: 0; 
+        }
 
-        {{-- ESTADO Y ASIGNACIONES --}}
-        <fieldset style="margin-bottom: 15px;">
-            <legend>Estado y asignaciones</legend>
+       
+        form textarea {
+            grid-column: 1 / -1;
+        }
+        
+        .full-width-input input[type="text"] {
+            width: 100%;
+        }
 
-            <div>
-                <label>Estado *</label><br>
-                <select wire:model="estado">
-                    <option value="pendiente">Pendiente</option>
-                    <option value="en_transito">En tránsito</option>
-                    <option value="entregado">Entregado</option>
-                    <option value="cancelado">Cancelado</option>
-                </select>
-            </div>
+       
+        .action-buttons {
+            margin-top: 25px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
 
-            <div>
-                <label>Motorista</label><br>
-                <select wire:model="id_motorista">
-                    <option value="">-- Sin asignar --</option>
-                    @foreach($motoristas as $m)
-                        <option value="{{ $m->id }}">{{ $m->name }}</option>
+        .action-buttons button {
+            padding: 10px 20px;
+            background-color: var(--color-primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .action-buttons button:hover {
+            background-color: var(--color-primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .cancel-link {
+            color: var(--color-text-subtle);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 5px;
+        }
+
+        .cancel-link:hover {
+            color: var(--color-text-dark);
+        }
+
+      
+        @media (max-width: 600px) {
+            .form-container {
+                padding: 10px;
+            }
+            .card-container {
+                padding: 15px;
+            }
+            .fieldset-group {
+                grid-template-columns: 1fr;
+            }
+            form fieldset > div {
+                margin-bottom: 10px;
+            }
+            .action-buttons {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .action-buttons button {
+                width: 100%;
+            }
+        }
+    </style>
+
+    <div class="form-container">
+        <h2 class="title-header">{{ $envio && $envio->exists ? 'Editar Envío' : 'Crear Nuevo Envío' }} </h2>
+
+        <div class="card-container">
+
+            @if (session('message'))
+                <div class="alert-success">
+                    {{ session('message') }}
+                </div>
+            @endif
+
+            {{-- Para ver si hay errores de validación --}}
+            @if ($errors->any())
+                <ul class="alert-errors-list">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
                     @endforeach
-                </select>
-            </div>
+                </ul>
+            @endif
 
-            <div>
-                <label>Vehículo</label><br>
-                <select wire:model="id_vehiculo">
-                    <option value="">-- Sin asignar --</option>
-                    @foreach($vehiculos as $v)
-                        <option value="{{ $v->id }}">{{ $v->placa }} - {{ $v->modelo }}</option>
-                    @endforeach
-                </select>
-            </div>
-        </fieldset>
+            <form wire:submit.prevent="guardar">
+                {{-- REMITENTE --}}
+                <fieldset>
+                    <legend>Datos del Remitente</legend>
 
-        {{-- CÓDIGO DE TRACKING --}}
-        <div style="margin-bottom: 15px;">
-            <label>Código de tracking</label><br>
-            <input type="text" wire:model="codigo_tracking" readonly>
+                    <div class="fieldset-group">
+                        <div>
+                            <label>Nombre *</label>
+                            <input type="text" wire:model="remitente_nombre">
+                        </div>
+
+                        <div>
+                            <label>Teléfono</label>
+                            <input type="text" wire:model="remitente_telefono">
+                        </div>
+
+                        <div>
+                            <label>Dirección</label>
+                            <input type="text" wire:model="remitente_direccion">
+                        </div>
+                    </div>
+                </fieldset>
+
+                {{-- DESTINATARIO --}}
+                <fieldset>
+                    <legend>Datos del Destinatario</legend>
+
+                    <div class="fieldset-group">
+                        <div>
+                            <label>Nombre *</label>
+                            <input type="text" wire:model="destinatario_nombre">
+                        </div>
+
+                        <div>
+                            <label>Teléfono</label>
+                            <input type="text" wire:model="destinatario_telefono">
+                        </div>
+
+                        <div>
+                            <label>Dirección</label>
+                            <input type="text" wire:model="destinatario_direccion">
+                        </div>
+                    </div>
+                </fieldset>
+
+                {{-- PAQUETE --}}
+                <fieldset>
+                    <legend>Detalles del Paquete</legend>
+
+                    <div class="fieldset-group">
+                        {{-- El textarea ocupa todo el ancho --}}
+                        <div>
+                            <label>Descripción</label>
+                            <textarea wire:model="descripcion" rows="3"></textarea>
+                        </div>
+
+                        <div>
+                            <label>Peso (kg)</label>
+                            <input type="number" step="0.01" wire:model="peso">
+                        </div>
+
+                        <div>
+                            <label>Tipo de envío</label>
+                            <input type="text" wire:model="tipo_envio" placeholder="Sobre, caja, frágil, etc.">
+                        </div>
+
+                        <div>
+                            <label>Fecha estimada de entrega</label>
+                            <input type="date" wire:model="fecha_estimada">
+                        </div>
+                    </div>
+                </fieldset>
+
+                {{-- ESTADO Y ASIGNACIONES --}}
+                <fieldset>
+                    <legend>Estado y Asignaciones</legend>
+
+                    <div class="fieldset-group">
+                        <div>
+                            <label>Estado *</label>
+                            <select wire:model="estado">
+                                <option value="pendiente">Pendiente</option>
+                                <option value="en_transito">En tránsito</option>
+                                <option value="entregado">Entregado</option>
+                                <option value="cancelado">Cancelado</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label>Motorista</label>
+                            <select wire:model="id_motorista">
+                                <option value="">-- Sin asignar --</option>
+                                @foreach($motoristas as $m)
+                                    <option value="{{ $m->id }}">{{ $m->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div>
+                            <label>Vehículo</label>
+                            <select wire:model="id_vehiculo">
+                                <option value="">-- Sin asignar --</option>
+                                @foreach($vehiculos as $v)
+                                    <option value="{{ $v->id }}">{{ $v->placa }} - {{ $v->modelo }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </fieldset>
+
+                {{-- CÓDIGO DE TRACKING --}}
+                <div class="full-width-input">
+                    <label>Código de tracking</label>
+                    <input type="text" wire:model="codigo_tracking" readonly>
+                </div>
+
+                <div class="action-buttons">
+                    <button type="submit">
+                        {{ $envio && $envio->exists ? 'Actualizar envío' : 'Guardar envío' }}
+                    </button>
+
+                    <a href="{{ route('envios.index') }}" class="cancel-link">Cancelar</a>
+                </div>
+            </form>
         </div>
-
-        <div style="margin-top: 10px;">
-            <button type="submit">
-                {{ $envio && $envio->exists ? 'Actualizar envío' : 'Guardar envío' }}
-            </button>
-
-            <a href="{{ route('envios.index') }}" style="margin-left: 10px;">Cancelar</a>
-        </div>
-    </form>
+    </div>
 </x-layouts.admin>
