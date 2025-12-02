@@ -84,6 +84,19 @@ class EnviosForm extends Component
     public function guardar()
     {
         $datos = $this->validate();
+        if (!empty($this->id_vehiculo)) {
+
+        $vehiculo = Vehiculo::find($this->id_vehiculo);
+
+        $enviosOcupados = Envio::where('id_vehiculo', $this->id_vehiculo)
+            ->whereIn('estado', ['pendiente', 'en ruta'])
+            ->count();
+
+        if ($enviosOcupados >= $vehiculo->capacidad) {
+            session()->flash('error', 'Este vehículo ya alcanzó su capacidad máxima.');
+            return;
+        }
+    }
 
         if ($this->modoEdicion && $this->envio) {
             $this->envio->update($datos);
