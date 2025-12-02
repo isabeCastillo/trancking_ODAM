@@ -249,8 +249,8 @@
 
                 <div class="sidebar-section-title">Gestión</div>
 
-                <a href="{{ route('tracking') }}"
-                    class="sidebar-link {{ request()->routeIs('tracking') ? 'is-active' : '' }}">
+                <a href="{{ route('motorista.tracking') }}"
+                    class="sidebar-link {{ request()->routeIs('motorista.tracking') ? 'is-active' : '' }}">
                     <span class="icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                             fill="currentColor" class="bi bi-mailbox-flag" viewBox="0 0 16 16">
@@ -258,9 +258,8 @@
                             <path d="M4 3h4v1H6.646A4 4 0 0 1 8 7v6h7V7a3 3 0 0 0-3-3V3a4 4 0 0 1 4 4v6a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V7a4 4 0 0 1 4-4m0 1a3 3 0 0 0-3 3v6h6V7a3 3 0 0 0-3-3" />
                         </svg>
                     </span>
-                    <span>Tracking</span>
-                </a>
-
+                        <span>Tracking</span>
+                    </a>
 
                 <a href="#" class="sidebar-link" style="opacity:.6; cursor:default;">
                     <span class="icon">

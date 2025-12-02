@@ -59,6 +59,8 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
     Route::get('/vehiculos', VehiculosIndex::class)->name('vehiculos.index');
     Route::get('/vehiculos/create', VehiculosForm::class)->name('vehiculos.create');
     Route::get('/vehiculos/{vehiculo}/editar', VehiculosForm::class)->name('vehiculos.edit');
+
+    Route::get('/admin/tracking', Tracking::class)->name('admin.tracking');
     
 });
 
@@ -69,7 +71,7 @@ Route::middleware(['auth', 'is_motorista'])->group(function () {
     Route::get('/motorista/envios', MotoristaEnvios::class)
         ->name('motorista.envios');
 
-    Route::get('/tracking', Tracking::class)->name('tracking');
+    Route::get('/motorista/tracking', Tracking::class)->name('motorista.tracking');
 
 });
 

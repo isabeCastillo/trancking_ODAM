@@ -1,5 +1,4 @@
 <div>
-    <x-layouts.motorista>
         <style>
         .tracking-page {
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -321,5 +320,4 @@
                 </div>
             </div>
         @endif
-    </x-layouts.motorista>
 </div>

@@ -7,9 +7,9 @@ use App\Models\Envio;
 
 class Tracking extends Component
 {
-    public $codigo;  // Lo que ingresa la persona
-    public $envio;   // Resultado de la búsqueda
-    public $mensaje; // Mensaje si no encuentra
+    public $codigo = '';
+    public $envio = null;
+    public $mensaje = null;
 
     public function buscar()
     {
@@ -24,6 +24,14 @@ class Tracking extends Component
 
     public function render()
     {
-        return view('livewire.tracking');
+        $view = view('livewire.tracking');
+
+        // Si es admin usar layout admin
+        if (auth()->check() && auth()->user()->rol === 'admin') {
+            return $view->layout('components.layouts.admin');
+        }
+
+        // Si es motorista usar layout motorista
+        return $view->layout('components.layouts.motorista');
     }
 }
