@@ -203,8 +203,6 @@
         }
     </style>
 
-    {{-- NOTA: He movido el layout wrapper FUERA del componente Livewire.
-         Asegúrate de que tu ruta usa el layout, o envuelve el componente al llamarlo --}}
     <div class="form-container">
         <h2 class="title-header">{{ $envio && $envio->exists ? 'Editar Envío' : 'Crear Nuevo Envío' }} </h2>
 
@@ -312,7 +310,8 @@
 
                         <div>
                             <label>Motorista</label>
-                            <select wire:model="id_motorista">
+                            <select wire:model="id_motorista" class="form-control" style="background:#f3f4f6; pointer-events:none;">
+
                                 <option value="">-- Sin asignar --</option>
                                 @foreach($motoristas as $m)
                                     <option value="{{ $m->id }}">{{ $m->name }}</option>

@@ -133,6 +133,23 @@ class EnviosForm extends Component
     ];
 }
 
+public function updatedIdVehiculo($value)
+{
+    $this->id_motorista = null;
+
+    if (!$value) return;
+    $vehiculo = Vehiculo::with('motorista')->find($value);
+
+    if ($vehiculo && $vehiculo->motorista) {
+        
+        $this->id_motorista = $vehiculo->user_id;
+    }
+
+    \Log::info('Vehículo cambiado: ' . $value . ' | Motorista asignado: ' . $this->id_motorista);
+}
+
+
+
 
     public function guardar()
     {
