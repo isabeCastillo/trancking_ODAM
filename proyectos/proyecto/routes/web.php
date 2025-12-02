@@ -17,6 +17,7 @@ use App\Livewire\UsersIndex;
 use App\Livewire\UsersForm;
 use App\Livewire\MotoristaEnvios;
 use App\Livewire\Tracking;
+use App\Livewire\MotoristaVehiculo;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -72,6 +73,9 @@ Route::middleware(['auth', 'is_motorista'])->group(function () {
         ->name('motorista.envios');
 
     Route::get('/motorista/tracking', Tracking::class)->name('motorista.tracking');
+
+    Route::get('/motorista/vehiculo', MotoristaVehiculo::class)
+        ->name('motorista.vehiculo');
 
 });
 
