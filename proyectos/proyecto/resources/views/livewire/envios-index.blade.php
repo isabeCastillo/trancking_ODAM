@@ -1,5 +1,5 @@
-<div>
-    {{-- Because she competes with no one, no one can compete with her. --}}
+{{-- resources/views/livewire/admin/dashboard.blade.php --}}
+<x-layouts.admin>
   <h2>Listado de Envíos</h2>
 
     @if (session('message'))
@@ -84,4 +84,4 @@
     <div style="margin-top: 10px;">
         {{ $envios->links() }}
     </div>
-</div>
+</x-layouts.admin>

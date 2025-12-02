@@ -1,4 +1,5 @@
-<div>
+{{-- resources/views/livewire/admin/dashboard.blade.php --}}
+<x-layouts.admin>
     {{-- Success is as dangerous as failure. --}}
     <h2>{{ $envio && $envio->exists ? 'Editar envío' : 'Crear envío' }}</h2>
 
@@ -132,5 +133,4 @@
             <a href="{{ route('envios.index') }}" style="margin-left: 10px;">Cancelar</a>
         </div>
     </form>
-
-</div>
+</x-layouts.admin>

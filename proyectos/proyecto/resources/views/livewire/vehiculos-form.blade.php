@@ -1,4 +1,5 @@
-<div>
+{{-- resources/views/livewire/admin/dashboard.blade.php --}}
+<x-layouts.admin>
     {{-- Close your eyes. Count to one. That is how long forever feels. --}}
     <h2>{{ $vehiculo ? 'Editar Vehículo' : 'Nuevo Vehículo' }}</h2>
     @if (session('error'))
@@ -47,4 +48,4 @@
 
         <button type="submit">Guardar</button>
     </form>
-</div>
+</x-layouts.admin>

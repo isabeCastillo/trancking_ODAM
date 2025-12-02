@@ -7,8 +7,8 @@ use App\Models\User;
 use App\Models\Vehiculo;
 use App\Models\HistorialEnvio;
 
-class Envio extends Model
-{
+class Envio extends Model {
+    protected $table = 'envios';
     protected $fillable = [
         'remitente_nombre',
         'remitente_telefono',
@@ -28,7 +28,7 @@ class Envio extends Model
 
     public function motorista()
     {
-        return $this->belongsTo(User::class, 'id_motorista');
+        return $this->belongsTo(Motorista::class, 'id_motorista');
     }
 
     public function vehiculo()
