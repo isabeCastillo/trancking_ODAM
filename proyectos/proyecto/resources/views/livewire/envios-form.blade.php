@@ -1,5 +1,5 @@
- {{-- resources/views/livewire/admin/crear-editar-envio.blade.php --}}
-<x-layouts.admin>
+<div>
+    {{-- ESTE ES EL ÚNICO DIV RAÍZ DEL COMPONENTE --}}
     <style>
         :root {
             --color-primary: #B91C1C;
@@ -10,10 +10,9 @@
             --color-border: #E5E7EB;
             --color-success: #10B981;
             --color-danger: #EF4444;
-            --color-motorista: #3B82F6; 
+            --color-motorista: #3B82F6;
         }
 
-       
         .form-container {
             padding: 20px 30px;
             background-color: var(--color-bg-light);
@@ -32,10 +31,9 @@
             background-color: white;
             border-radius: 10px;
             box-shadow: 0 1px 10px rgba(0, 0, 0, 0.05);
-            padding: 30px; 
+            padding: 30px;
         }
 
-       
         .alert-success {
             background-color: #D1FAE5;
             color: var(--color-success);
@@ -49,16 +47,27 @@
 
         .alert-errors-list {
             color: var(--color-danger);
+            background-color: #FEE2E2;
+            border: 1px solid #FCA5A5;
+            border-radius: 8px;
+            padding: 15px 15px 15px 35px;
             list-style: disc;
-            margin: 0 0 20px 20px;
-            padding: 0;
+            margin: 0 0 20px 0;
             font-size: 14px;
         }
+
         .alert-errors-list li {
             margin-bottom: 5px;
         }
 
-       
+        .error-message {
+            display: block;
+            color: var(--color-danger);
+            font-size: 13px;
+            margin-top: 5px;
+            font-weight: 600;
+        }
+
         form fieldset {
             border: 1px solid var(--color-border);
             border-radius: 8px;
@@ -75,7 +84,7 @@
         }
 
         form > div {
-            margin-bottom: 15px; 
+            margin-bottom: 15px;
         }
 
         form fieldset > div {
@@ -103,7 +112,7 @@
             transition: border-color 0.2s, box-shadow 0.2s;
             outline: none;
             box-shadow: inset 0 1px 2px rgba(0,0,0,0.06);
-            box-sizing: border-box; 
+            box-sizing: border-box;
         }
 
         form input:focus,
@@ -117,7 +126,6 @@
             resize: vertical;
         }
 
-        
         .fieldset-group {
             display: grid;
             gap: 15px;
@@ -125,19 +133,17 @@
         }
 
         form fieldset > .fieldset-group {
-            margin-bottom: 0; 
+            margin-bottom: 0;
         }
 
-       
         form textarea {
             grid-column: 1 / -1;
         }
-        
+
         .full-width-input input[type="text"] {
             width: 100%;
         }
 
-       
         .action-buttons {
             margin-top: 25px;
             display: flex;
@@ -174,7 +180,6 @@
             color: var(--color-text-dark);
         }
 
-      
         @media (max-width: 600px) {
             .form-container {
                 padding: 10px;
@@ -198,6 +203,8 @@
         }
     </style>
 
+    {{-- NOTA: He movido el layout wrapper FUERA del componente Livewire.
+         Asegúrate de que tu ruta usa el layout, o envuelve el componente al llamarlo --}}
     <div class="form-container">
         <h2 class="title-header">{{ $envio && $envio->exists ? 'Editar Envío' : 'Crear Nuevo Envío' }} </h2>
 
@@ -209,92 +216,88 @@
                 </div>
             @endif
 
-            {{-- Para ver si hay errores de validación --}}
             @if ($errors->any())
-                <ul class="alert-errors-list">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+                <div class="alert-errors-list">
+                    <strong>Por favor corrige los siguientes errores:</strong>
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
             @endif
 
             <form wire:submit.prevent="guardar">
-                {{-- REMITENTE --}}
                 <fieldset>
                     <legend>Datos del Remitente</legend>
-
                     <div class="fieldset-group">
                         <div>
                             <label>Nombre *</label>
                             <input type="text" wire:model="remitente_nombre">
+                            @error('remitente_nombre') <span class="error-message">{{ $message }}</span> @enderror
                         </div>
-
                         <div>
                             <label>Teléfono</label>
                             <input type="text" wire:model="remitente_telefono">
+                            @error('remitente_telefono') <span class="error-message">{{ $message }}</span> @enderror
                         </div>
-
                         <div>
                             <label>Dirección</label>
                             <input type="text" wire:model="remitente_direccion">
+                            @error('remitente_direccion') <span class="error-message">{{ $message }}</span> @enderror
                         </div>
                     </div>
                 </fieldset>
 
-                {{-- DESTINATARIO --}}
                 <fieldset>
                     <legend>Datos del Destinatario</legend>
-
                     <div class="fieldset-group">
                         <div>
                             <label>Nombre *</label>
                             <input type="text" wire:model="destinatario_nombre">
+                            @error('destinatario_nombre') <span class="error-message">{{ $message }}</span> @enderror
                         </div>
-
                         <div>
                             <label>Teléfono</label>
                             <input type="text" wire:model="destinatario_telefono">
+                            @error('destinatario_telefono') <span class="error-message">{{ $message }}</span> @enderror
                         </div>
-
                         <div>
                             <label>Dirección</label>
                             <input type="text" wire:model="destinatario_direccion">
+                            @error('destinatario_direccion') <span class="error-message">{{ $message }}</span> @enderror
                         </div>
                     </div>
                 </fieldset>
 
-                {{-- PAQUETE --}}
                 <fieldset>
                     <legend>Detalles del Paquete</legend>
-
                     <div class="fieldset-group">
-                        {{-- El textarea ocupa todo el ancho --}}
                         <div>
                             <label>Descripción</label>
                             <textarea wire:model="descripcion" rows="3"></textarea>
+                            @error('descripcion') <span class="error-message">{{ $message }}</span> @enderror
                         </div>
-
                         <div>
                             <label>Peso (kg)</label>
                             <input type="number" step="0.01" wire:model="peso">
+                            @error('peso') <span class="error-message">{{ $message }}</span> @enderror
                         </div>
-
                         <div>
                             <label>Tipo de envío</label>
                             <input type="text" wire:model="tipo_envio" placeholder="Sobre, caja, frágil, etc.">
+                            @error('tipo_envio') <span class="error-message">{{ $message }}</span> @enderror
                         </div>
-
                         <div>
                             <label>Fecha estimada de entrega</label>
                             <input type="date" wire:model="fecha_estimada">
+                            @error('fecha_estimada') <span class="error-message">{{ $message }}</span> @enderror
                         </div>
                     </div>
                 </fieldset>
 
-                {{-- ESTADO Y ASIGNACIONES --}}
                 <fieldset>
                     <legend>Estado y Asignaciones</legend>
-
                     <div class="fieldset-group">
                         <div>
                             <label>Estado *</label>
@@ -304,6 +307,7 @@
                                 <option value="entregado">Entregado</option>
                                 <option value="cancelado">Cancelado</option>
                             </select>
+                            @error('estado') <span class="error-message">{{ $message }}</span> @enderror
                         </div>
 
                         <div>
@@ -314,6 +318,7 @@
                                     <option value="{{ $m->id }}">{{ $m->name }}</option>
                                 @endforeach
                             </select>
+                            @error('id_motorista') <span class="error-message">{{ $message }}</span> @enderror
                         </div>
 
                         <div>
@@ -321,17 +326,21 @@
                             <select wire:model="id_vehiculo">
                                 <option value="">-- Sin asignar --</option>
                                 @foreach($vehiculos as $v)
-                                    <option value="{{ $v->id }}">{{ $v->placa }} - {{ $v->modelo }}</option>
+                                    <option value="{{ $v->id }}">{{ $v->placa }} (Cap: {{ $v->capacidad }})</option>
                                 @endforeach
                             </select>
+                            {{-- AQUÍ APARECERÁ TU MENSAJE DE ERROR --}}
+                            @error('id_vehiculo')
+                                <span class="error-message">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
                 </fieldset>
 
-                {{-- CÓDIGO DE TRACKING --}}
                 <div class="full-width-input">
                     <label>Código de tracking</label>
                     <input type="text" wire:model="codigo_tracking" readonly>
+                    @error('codigo_tracking') <span class="error-message">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="action-buttons">
@@ -344,4 +353,4 @@
             </form>
         </div>
     </div>
-</x-layouts.admin>
+</div>

@@ -8,6 +8,8 @@ use App\Models\Vehiculo;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
+use Closure;
+use Illuminate\Support\Facades\Log;
 
 #[Layout('components.layouts.app')]
 class EnviosForm extends Component
@@ -70,7 +72,57 @@ class EnviosForm extends Component
         'estado'                 => ['required', Rule::in(['pendiente', 'en_transito', 'entregado', 'cancelado'])],
 
         'id_motorista'           => ['nullable', 'exists:users,id'],
-        'id_vehiculo'            => ['nullable', 'exists:vehiculos,id'],
+        'id_vehiculo' => [
+                'nullable',
+                'exists:vehiculos,id',
+                function (string $attribute, mixed $value, Closure $fail) {
+                    if (!$value) return;
+
+                    Log::info('--- INICIO VALIDACION PERSONALIZADA ---');
+                    Log::info('ID Vehículo seleccionado: ' . $value);
+
+                    // 1. Obtener capacidad
+                    // ¡ATENCIÓN! ¿Es 'capacidad' el nombre exacto de tu columna en la tabla 'vehiculos'?
+                    $capacidadMaxima = Vehiculo::where('id', $value)->value('capacidad');
+
+                    // Usamos json_encode para ver exactamente qué trajo (si es null, texto, numero)
+                    Log::info('Valor crudo de capacidad obtenido de BD: ' . json_encode($capacidadMaxima));
+
+                    if (!is_numeric($capacidadMaxima)) {
+                         Log::info('VALIDACION TERMINADA ANTES DE TIEMPO: La capacidad es NULL o no es un número. Se permite guardar.');
+                         Log::info('--- FIN VALIDACION ---');
+                         // Si no hay capacidad definida, asumimos que no hay límite y dejamos pasar.
+                         return;
+                    }
+
+                    $capacidadMaximaInt = (int) $capacidadMaxima;
+                    Log::info('Capacidad interpretada como entero: ' . $capacidadMaximaInt);
+
+                    // 2. Query builder
+                    $query = Envio::query()
+                        ->where('id_vehiculo', $value)
+                        ->whereIn('estado', ['pendiente', 'en_transito']);
+
+                    // 3. Excluir si editamos
+                    if ($this->envio && $this->envio->exists) {
+                         $query->where('id', '!=', $this->envio->id);
+                         Log::info('Modo edición: Excluyendo el envío actual ID ' . $this->envio->id . ' del conteo.');
+                    }
+
+                    // 4. Contar
+                    $conteoEnviosActivos = $query->count();
+                    Log::info('Conteo total de envíos activos encontrados: ' . $conteoEnviosActivos);
+
+                    // 5. Comparar
+                    if ($conteoEnviosActivos >= $capacidadMaximaInt) {
+                        Log::info('RESULTADO: FALLO. El vehículo está lleno (' . $conteoEnviosActivos . ' >= ' . $capacidadMaximaInt . ')');
+                        $fail("El vehículo seleccionado ya está lleno. Tiene {$conteoEnviosActivos} de {$capacidadMaximaInt} envíos asignados.");
+                    } else {
+                        Log::info('RESULTADO: OK. Hay espacio.');
+                    }
+                    Log::info('--- FIN VALIDACION ---');
+                },
+            ],
 
         'codigo_tracking'        => [
             'required',
