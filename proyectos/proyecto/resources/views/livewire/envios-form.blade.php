@@ -1,389 +1,222 @@
+<div>
+    {{-- resources/views/livewire/envios-form.blade.php --}}
 
-<x-layouts.admin>
-    <style>
-        
-        :root {
-            --color-primary: #B91C1C; 
-            --color-primary-dark: #991B1B;
-            --color-bg-light: #F9FAFB; 
-            --color-text-dark: #374151;
-            --color-text-subtle: #6B7280;
-            --color-border: #E5E7EB;
-            --color-success: #10B981;
-            --color-danger: #EF4444;
-            --color-accent: #B91C1C;
-        }
-
-       
-        .form-page-container {
-            padding: 20px 30px;
-            background-color: transparent; 
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            color: var(--color-text-dark);
-        }
-
-        .main-card-wrapper {
-            display: flex;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-
-       
-        .left-panel-branding {
-            width: 350px; 
-            flex-shrink: 0;
-            background-color: var(--color-accent);
-            color: white;
-            padding: 40px 30px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between; 
-            text-align: center;
-        }
-
-        .left-panel-branding .branding-content {
-            margin-top: 50px;
-        }
-
-        .left-panel-branding .icon-container {
-            height: 120px;
-            margin-bottom: 30px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .left-panel-branding h3 {
-            font-size: 28px;
-            font-weight: 800;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            line-height: 1.2;
-        }
-
-        .left-panel-branding p {
-            font-size: 14px;
-            opacity: 0.9;
-            line-height: 1.5;
-        }
-
-      
-        .right-form-area {
-            flex-grow: 1;
-            padding: 40px 50px;
-        }
-
-        .page-title {
-            font-size: 26px;
-            font-weight: 700;
-            color: var(--color-text-dark);
-            margin-bottom: 20px;
-        }
-
-        .form-title-h2 {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--color-text-dark);
-            margin-bottom: 10px;
-        }
-
-        .form-subtitle {
-            font-size: 14px;
-            color: var(--color-text-subtle);
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid var(--color-border);
-        }
-
-        .form-section-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--color-text-dark);
-            margin-top: 25px;
-            margin-bottom: 15px;
-            padding-bottom: 5px;
-            border-bottom: 2px solid var(--color-border);
-        }
-
-       
-        .input-group-row {
-            display: grid;
-            gap: 20px;
-            margin-bottom: 20px;
-            grid-template-columns: repeat(3, 1fr); 
-        }
-        
-       
-        .package-details-row {
-           
-            grid-template-columns: 1.5fr 1fr 1fr 1fr;
-        }
-
-        .input-group-row label {
-            display: block;
-            margin-bottom: 5px;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--color-text-subtle);
-            text-transform: uppercase;
-        }
-
-        .input-group-row input[type="text"],
-        .input-group-row input[type="number"],
-        .input-group-row input[type="date"],
-        .input-group-row textarea,
-        .input-group-row select {
-            width: 100%;
-            padding: 10px 12px;
-            border-radius: 6px;
-            border: 1px solid var(--color-border);
-            font-size: 14px;
-            box-sizing: border-box;
-            transition: border-color 0.2s;
-        }
-
-        .input-group-row input:focus,
-        .input-group-row select:focus,
-        .input-group-row textarea:focus {
-            border-color: var(--color-primary);
-            box-shadow: 0 0 0 2px rgba(185, 28, 28, 0.2);
-            outline: none;
-        }
-
-        .input-group-row textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-        
-       
-        .tracking-code-row .full-span {
-            grid-column: span 3; 
-        }
-
-        
-        .action-buttons {
-            margin-top: 40px;
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            justify-content: flex-start;
-        }
-
-        .main-action-button {
-            padding: 12px 30px;
-            background-color: var(--color-primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
-        }
-
-        .main-action-button:hover {
-            background-color: var(--color-primary-dark);
-            transform: translateY(-1px);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-
-        .cancel-link {
-            color: var(--color-text-subtle);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 15px;
-            padding: 12px 0;
-        }
-        .cancel-link:hover { color: var(--color-text-dark); }
-
-        
-        .alert-success {  }
-        .alert-errors-list { }
-
-        
-        @media (max-width: 992px) {
-            .main-card-wrapper {
-                flex-direction: column;
+    <x-layouts.admin>
+        <style>
+            .form-card {
+                background-color: var(--color-card-bg);
+                border-radius: 12px;
+                box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+                padding: 18px;
+                max-width: 1000px;
+                margin: 0 auto;
             }
-            .left-panel-branding {
+            .form-title {
+                font-size: 20px;
+                font-weight: 700;
+                margin-bottom: 4px;
+            }
+            .form-subtitle {
+                font-size: 13px;
+                color: var(--color-text-subtle);
+                margin-bottom: 16px;
+            }
+            .form-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                gap: 14px 20px;
+            }
+            .field-label {
+                font-size: 12px;
+                color: var(--color-text-subtle);
+                margin-bottom: 2px;
+            }
+            .field-input, .field-select, .field-textarea {
                 width: 100%;
-                padding: 30px 20px;
+                font-size: 13px;
+                padding: 8px 10px;
+                border-radius: 8px;
+                border: 1px solid var(--color-border);
             }
-            .right-form-area {
-                padding: 30px 20px;
+            .field-textarea {
+                min-height: 70px;
+                resize: vertical;
             }
-            
-            .input-group-row,
-            .package-details-row {
-                grid-template-columns: 1fr;
+            .field-error {
+                font-size: 11px;
+                color: #DC2626;
             }
-            .tracking-code-row .full-span {
-                grid-column: span 1;
+            .form-actions {
+                margin-top: 18px;
+                display: flex;
+                justify-content: flex-end;
+                gap: 10px;
             }
-            .action-buttons {
-                justify-content: space-between;
+            .btn-primary {
+                border: none;
+                border-radius: 999px;
+                padding: 8px 18px;
+                background-color: var(--color-primary);
+                color: #fff;
+                font-size: 13px;
+                font-weight: 600;
+                cursor: pointer;
             }
-        }
-    </style>
-    
-    <div class="form-page-container">
-        <h1 class="page-title"></h1>
+            .btn-primary:hover {
+                background-color: var(--color-primary-dark);
+            }
+            .btn-secondary {
+                border-radius: 999px;
+                padding: 8px 18px;
+                font-size: 13px;
+                border: 1px solid var(--color-border);
+                background-color: #fff;
+                cursor: pointer;
+            }
+            .section-title {
+                font-size: 14px;
+                font-weight: 600;
+                margin-top: 10px;
+                margin-bottom: 4px;
+            }
+        </style>
 
-        <div class="main-card-wrapper">
-            
-            {{-- Panel Lateral de Branding (Rojo) --}}
-            <div class="left-panel-branding">
-                
-                <div class="icon-container">
-                    {{-- Ícono de Font Awesome: Caja Abierta --}}
-                    <i class="fas fa-box-open" style="font-size: 70px; color: white;"></i>
-                </div>
-                
-                <div class="branding-content">
-                    <h3>GESTIÓN DE ENVÍOS</h3>
-                    <p>
-                        Utiliza este formulario para registrar un nuevo envío o actualizar los datos de un envío existente, incluyendo el seguimiento, estado y asignación de personal.
-                    </p>
-                </div>
-                
-                <div style="font-size: 12px; opacity: 0.7; margin-top: auto;">
-                   
-                </div>
+        <div class="form-card">
+            <div class="form-title">
+                {{ $modoEdicion ? 'Editar envío' : 'Registrar nuevo envío' }}
+            </div>
+            <div class="form-subtitle">
+                Completa los datos del remitente, destinatario y detalles del paquete.
             </div>
 
-            {{-- Contenido del Formulario --}}
-            <div class="right-form-area">
-                <h2 class="form-title-h2">
-                    {{ $envio && $envio->exists ? 'Editar Envío' : 'Crear Nuevo Envío' }}
-                </h2>
-                <p class="form-subtitle"></p>
+            @if (session()->has('mensaje'))
+                <div style="padding:8px 10px; border-radius:8px; background:#D1FAE5; color:#065F46; font-size:13px; margin-bottom:10px;">
+                    {{ session('mensaje') }}
+                </div>
+            @endif
 
-                @if (session('message'))
-                    <div class="alert-success">
-                        {{ session('message') }}
-                    </div>
-                @endif
-
-                {{-- Errores de validación --}}
-                @if ($errors->any())
-                    <ul class="alert-errors-list">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                @endif
-
-                <form wire:submit.prevent="guardar">
-                    
-                    {{-- REMITENTE --}}
-                    <h3 class="form-section-title">Datos del Remitente</h3>
-                    <div class="input-group-row">
-                        <div>
-                            <label>NOMBRE *</label>
-                            <input type="text" wire:model="remitente_nombre" placeholder="Nombre completo">
-                        </div>
-                        <div>
-                            <label>TELÉFONO</label>
-                            <input type="text" wire:model="remitente_telefono" placeholder="">
-                        </div>
-                        <div>
-                            <label>DIRECCIÓN</label>
-                            <input type="text" wire:model="remitente_direccion" placeholder="Dirección de envío">
-                        </div>
+            <form wire:submit.prevent="guardar">
+                {{-- REMITENTE --}}
+                <div class="section-title">Datos del remitente</div>
+                <div class="form-grid">
+                    <div>
+                        <div class="field-label">Nombre</div>
+                        <input type="text" class="field-input" wire:model.defer="remitente_nombre">
+                        @error('remitente_nombre') <div class="field-error">{{ $message }}</div> @enderror
                     </div>
 
-                    {{-- DESTINATARIO --}}
-                    <h3 class="form-section-title">Datos del Destinatario</h3>
-                    <div class="input-group-row">
-                        <div>
-                            <label>NOMBRE *</label>
-                            <input type="text" wire:model="destinatario_nombre" placeholder="Nombre completo">
-                        </div>
-                        <div>
-                            <label>TELÉFONO</label>
-                            <input type="text" wire:model="destinatario_telefono" placeholder="">
-                        </div>
-                        <div>
-                            <label>DIRECCIÓN</label>
-                            <input type="text" wire:model="destinatario_direccion" placeholder="Dirección completa de entrega">
-                        </div>
+                    <div>
+                        <div class="field-label">Teléfono</div>
+                        <input type="text" class="field-input" wire:model.defer="remitente_telefono">
+                        @error('remitente_telefono') <div class="field-error">{{ $message }}</div> @enderror
                     </div>
 
-                    {{-- PAQUETE --}}
-                    <h3 class="form-section-title">Detalles del Paquete</h3>
-                    <div class="input-group-row package-details-row">
-                        <div>
-                            <label>DESCRIPCIÓN</label>
-                            <textarea wire:model="descripcion" rows="3" placeholder="Contenido o detalles del paquete"></textarea>
-                        </div>
-                        <div>
-                            <label>PESO (KG)</label>
-                            <input type="number" step="0.01" wire:model="peso" placeholder="">
-                        </div>
-                        <div>
-                            <label>TIPO DE ENVÍO</label>
-                            <input type="text" wire:model="tipo_envio" placeholder="Sobre, caja, frágil, etc.">
-                        </div>
-                        <div>
-                            <label>FECHA ESTIMADA DE ENTREGA</label>
-                            <input type="date" wire:model="fecha_estimada">
-                        </div>
+                    <div>
+                        <div class="field-label">Dirección</div>
+                        <input type="text" class="field-input" wire:model.defer="remitente_direccion">
+                        @error('remitente_direccion') <div class="field-error">{{ $message }}</div> @enderror
+                    </div>
+                </div>
+
+                {{-- DESTINATARIO --}}
+                <div class="section-title">Datos del destinatario</div>
+                <div class="form-grid">
+                    <div>
+                        <div class="field-label">Nombre</div>
+                        <input type="text" class="field-input" wire:model.defer="destinatario_nombre">
+                        @error('destinatario_nombre') <div class="field-error">{{ $message }}</div> @enderror
                     </div>
 
-                    {{-- ESTADO Y ASIGNACIONES --}}
-                    <h3 class="form-section-title">Estado y Asignaciones</h3>
-                    <div class="input-group-row">
-                        <div>
-                            <label>ESTADO *</label>
-                            <select wire:model="estado">
-                                <option value="pendiente">Pendiente</option>
-                                <option value="en_transito">En tránsito</option>
-                                <option value="entregado">Entregado</option>
-                                <option value="cancelado">Cancelado</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label>MOTORISTA</label>
-                            <select wire:model="id_motorista">
-                                <option value="">-- Sin asignar --</option>
-                                @foreach($motoristas as $m)
-                                    <option value="{{ $m->id }}">{{ $m->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div>
-                            <label>VEHÍCULO</label>
-                            <select wire:model="id_vehiculo">
-                                <option value="">-- Sin asignar --</option>
-                                @foreach($vehiculos as $v)
-                                    <option value="{{ $v->id }}">{{ $v->placa }} - {{ $v->modelo }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                    <div>
+                        <div class="field-label">Teléfono</div>
+                        <input type="text" class="field-input" wire:model.defer="destinatario_telefono">
+                        @error('destinatario_telefono') <div class="field-error">{{ $message }}</div> @enderror
                     </div>
 
-                    {{-- CÓDIGO DE TRACKING --}}
-                    <h3 class="form-section-title">Código de Tracking</h3>
-                    <div class="input-group-row">
-                        <div class="full-span">
-                            <label>CÓDIGO DE TRACKING</label>
-                            <input type="text" wire:model="codigo_tracking" readonly placeholder="Se generará automáticamente al guardar (ej. ENV-0004)">
-                        </div>
+                    <div>
+                        <div class="field-label">Dirección</div>
+                        <input type="text" class="field-input" wire:model.defer="destinatario_direccion">
+                        @error('destinatario_direccion') <div class="field-error">{{ $message }}</div> @enderror
+                    </div>
+                </div>
+
+                {{-- DETALLE DEL PAQUETE --}}
+                <div class="section-title">Detalle del envío</div>
+                <div class="form-grid">
+                    <div>
+                        <div class="field-label">Descripción del paquete</div>
+                        <textarea class="field-textarea" wire:model.defer="descripcion"></textarea>
+                        @error('descripcion') <div class="field-error">{{ $message }}</div> @enderror
                     </div>
 
-                    {{-- Botones de Acción --}}
-                    <div class="action-buttons">
-                        <button type="submit" class="main-action-button">
-                            {{ $envio && $envio->exists ? 'Actualizar envío' : 'Guardar nuevo envío' }}
-                        </button>
-                        <a href="{{ route('envios.index') }}" class="cancel-link">Cancelar</a>
+                    <div>
+                        <div class="field-label">Peso (kg)</div>
+                        <input type="number" step="0.01" class="field-input" wire:model.defer="peso">
+                        @error('peso') <div class="field-error">{{ $message }}</div> @enderror
                     </div>
-                </form>
-            </div>
+
+                    <div>
+                        <div class="field-label">Tipo de envío</div>
+                        <input type="text" class="field-input" wire:model.defer="tipo_envio">
+                        @error('tipo_envio') <div class="field-error">{{ $message }}</div> @enderror
+                    </div>
+
+                    <div>
+                        <div class="field-label">Fecha estimada</div>
+                        <input type="date" class="field-input" wire:model.defer="fecha_estimada">
+                        @error('fecha_estimada') <div class="field-error">{{ $message }}</div> @enderror
+                    </div>
+                </div>
+
+                {{-- ASIGNACIÓN Y ESTADO --}}
+                <div class="section-title">Asignación y estado</div>
+                <div class="form-grid">
+                    <div>
+                        <div class="field-label">Motorista</div>
+                        <select class="field-select" wire:model.defer="id_motorista">
+                            <option value="">-- Sin asignar --</option>
+                            @foreach ($motoristas as $motorista)
+                                <option value="{{ $motorista->id }}">{{ $motorista->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('id_motorista') <div class="field-error">{{ $message }}</div> @enderror
+                    </div>
+
+                    <div>
+                        <div class="field-label">Vehículo</div>
+                        <select class="field-select" wire:model.defer="id_vehiculo">
+                            <option value="">-- Sin asignar --</option>
+                            @foreach ($vehiculos as $vehiculo)
+                                <option value="{{ $vehiculo->id }}">{{ $vehiculo->placa ?? $vehiculo->nombre ?? 'Vehículo #'.$vehiculo->id }}</option>
+                            @endforeach
+                        </select>
+                        @error('id_vehiculo') <div class="field-error">{{ $message }}</div> @enderror
+                    </div>
+
+                    <div>
+                        <div class="field-label">Estado</div>
+                        <select class="field-select" wire:model.defer="estado">
+                            <option value="pendiente">Pendiente</option>
+                            <option value="en ruta">En ruta</option>
+                            <option value="entregado">Entregado</option>
+                        </select>
+                        @error('estado') <div class="field-error">{{ $message }}</div> @enderror
+                    </div>
+
+                    <div>
+                        <div class="field-label">Código de tracking</div>
+                        <input type="text" class="field-input" wire:model.defer="codigo_tracking">
+                        @error('codigo_tracking') <div class="field-error">{{ $message }}</div> @enderror
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <a href="{{ route('envios.index') }}" class="btn-secondary">Cancelar</a>
+                    <button type="submit" class="btn-primary">
+                        {{ $modoEdicion ? 'Guardar cambios' : 'Guardar envío' }}
+                    </button>
+                </div>
+            </form>
         </div>
-    </div>
-</x-layouts.admin>
+    </x-layouts.admin>
+</div>

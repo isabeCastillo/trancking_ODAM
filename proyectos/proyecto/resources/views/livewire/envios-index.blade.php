@@ -1,4 +1,5 @@
-{{-- resources/views/livewire/admin/listado-envios.blade.php --}}
+<div>
+    {{-- resources/views/livewire/admin/listado-envios.blade.php --}}
 <x-layouts.admin>
     <style>
         :root {
@@ -379,3 +380,4 @@
         </div>
     </div>
 </x-layouts.admin>
+</div>

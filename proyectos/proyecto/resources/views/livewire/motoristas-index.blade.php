@@ -1,4 +1,5 @@
-{{-- resources/views/livewire/admin/dashboard.blade.php --}}
+<div>
+    {{-- resources/views/livewire/admin/dashboard.blade.php --}}
 <x-layouts.admin>
     {{-- The whole world belongs to you. --}}
     <h2>Motoristas</h2>
@@ -32,3 +33,4 @@
         </tbody>
     </table>
 </x-layouts.admin>
+</div>

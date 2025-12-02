@@ -1,4 +1,5 @@
-{{-- resources/views/livewire/admin/vehiculos-index.blade.php --}}
+<div>
+    {{-- resources/views/livewire/admin/vehiculos-index.blade.php --}}
 <x-layouts.admin>
 
 <style>
@@ -233,3 +234,4 @@
 </div>
 
 </x-layouts.admin>
+

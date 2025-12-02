@@ -1,4 +1,5 @@
-{{-- resources/views/livewire/admin/vehiculos-form.blade.php --}}
+<div>
+    {{-- resources/views/livewire/admin/vehiculos-form.blade.php --}}
 <x-layouts.admin>
     <style>
         :root {
@@ -280,3 +281,4 @@
         </div>
     </div>
 </x-layouts.admin>
+</div>

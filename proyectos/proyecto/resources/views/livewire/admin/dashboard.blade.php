@@ -1,4 +1,5 @@
-{{-- resources/views/livewire/admin/dashboard.blade.php --}}
+<div>
+    {{-- resources/views/livewire/admin/dashboard.blade.php --}}
 
 <x-layouts.admin>
     <style>
@@ -511,3 +512,4 @@
         </div>
     </div>
 </x-layouts.admin>
+</div>

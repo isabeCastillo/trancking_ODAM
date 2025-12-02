@@ -1,4 +1,4 @@
-{{-- resources/views/livewire/admin/motoristas-form.blade.php --}}
+{{-- resources/views/livewire/admin/dashboard.blade.php --}}
 <x-layouts.admin>
 
     <style>
@@ -254,4 +254,3 @@
     </div>
 
 </x-layouts.admin>
-

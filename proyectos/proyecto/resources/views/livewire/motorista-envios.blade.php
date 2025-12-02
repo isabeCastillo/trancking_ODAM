@@ -1,4 +1,5 @@
 <div>
+    <div>
     <h2>Mis Envíos</h2>
 
     @if (session('mensaje'))
@@ -62,4 +63,5 @@
             Guardar cambios
         </button>
     @endif
+</div>
 </div>

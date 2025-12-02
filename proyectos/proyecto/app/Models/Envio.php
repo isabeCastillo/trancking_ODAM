@@ -28,10 +28,8 @@ class Envio extends Model
         'codigo_tracking',
     ];
 
-    
     public function motorista()
     {
-        
         return $this->belongsTo(User::class, 'id_motorista');
     }
 
