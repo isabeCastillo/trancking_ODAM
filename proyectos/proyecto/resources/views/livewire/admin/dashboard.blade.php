@@ -233,6 +233,48 @@
             background: linear-gradient(90deg, var(--color-primary), var(--color-primary-dark));
         }
 
+                /* Mini gráfico de barras (envíos por día) */
+        .mini-bar-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .mini-bar-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+        }
+
+        .mini-bar-label {
+            width: 38px;
+            color: var(--color-text-subtle);
+            font-weight: 600;
+        }
+
+        .mini-bar-track {
+            flex: 1;
+            height: 7px;
+            border-radius: 999px;
+            background-color: #E5E7EB;
+            overflow: hidden;
+        }
+
+        .mini-bar-fill {
+            height: 100%;
+            border-radius: 999px;
+            background: linear-gradient(90deg, var(--color-primary), var(--color-primary-dark));
+        }
+
+        .mini-bar-value {
+            width: 26px;
+            text-align: right;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--color-text-dark);
+        }
+
         .chip {
             display: inline-flex;
             align-items: center;
@@ -453,61 +495,160 @@
                     </ul>
                 </div>
 
-                {{-- Envíos por día (texto, listo para un gráfico real después) --}}
+                {{-- Envíos por día (mini gráfico) --}}
                 <div class="dashboard-card">
                     <div class="card-title-row">
                         <div>
                             <div class="card-title">Envíos por día (7 días)</div>
-                            <div class="card-subtitle">Datos listos para gráfico.</div>
+                            <div class="card-subtitle">Resumen visual de los últimos días.</div>
                         </div>
                     </div>
 
                     <div class="chart-placeholder">
                         @if ($enviosPorDia->count())
-                        <div>
-                            @foreach ($enviosPorDia as $dia)
-                            <div style="margin-bottom:4px;">
-                                <strong>{{ \Carbon\Carbon::parse($dia->fecha)->format('d/m') }}:</strong>
-                                {{ $dia->total }} envíos
+                            @php
+                                $maxDia = $enviosPorDia->max('total');
+                            @endphp
+
+                            <div class="mini-bar-chart">
+                                @foreach ($enviosPorDia as $dia)
+                                    @php
+                                        $porcentaje = $maxDia > 0
+                                            ? round(($dia->total / $maxDia) * 100)
+                                            : 0;
+                                    @endphp
+                                    <div class="mini-bar-row">
+                                        <span class="mini-bar-label">
+                                            {{ \Carbon\Carbon::parse($dia->fecha)->format('d/m') }}
+                                        </span>
+                                        <div class="mini-bar-track">
+                                            <div class="mini-bar-fill" style="width: {{ $porcentaje }}%;"></div>
+                                        </div>
+                                        <span class="mini-bar-value">
+                                            {{ $dia->total }}
+                                        </span>
+                                    </div>
+                                @endforeach
                             </div>
-                            @endforeach
-                        </div>
                         @else
-                        Aún no hay suficientes datos para la última semana.
+                            Aún no hay suficientes datos para la última semana.
                         @endif
                     </div>
                 </div>
 
-                {{-- Zona / ciudad (placeholder) --}}
+                {{-- Zona / ciudad + mapa --}}
                 <div class="dashboard-card">
                     <div class="card-title-row">
                         <div>
                             <div class="card-title">Distribución por zona</div>
                             <div class="card-subtitle">
+                                Totales por dirección y mapa de referencia.
                             </div>
                         </div>
                     </div>
 
                     <div class="map-placeholder">
                         @if ($enviosPorCiudad->count())
-                            <div>
+                            {{-- Lista textual --}}
+                            <div style="margin-bottom:8px;">
                                 @foreach ($enviosPorCiudad as $fila)
-                                <div style="margin-bottom:4px;">
-                                    <strong>{{ $fila->destinatario_direccion }}:</strong>
-                                    {{ $fila->total }} envíos
-                                </div>
+                                    <div style="margin-bottom:4px;">
+                                        <strong>{{ $fila->destinatario_direccion }}:</strong>
+                                        {{ $fila->total }} envíos
+                                    </div>
                                 @endforeach
-                                <p style="margin-top:8px;font-size:11px;">
-                                </p>
                             </div>
+
+                            {{-- Contenedor del mapa --}}
+                            <div id="map-envios" style="width:100%;height:260px;border-radius:10px;overflow:hidden;"></div>
                         @else
-                            Cuando exista un campo de ciudad/zona específico en la tabla <code>envios</code>,
-                            aquí aparecerán los totales por zona.
+                            Cuando exista información de direcciones en la tabla <code>envios</code>,
+                            aquí aparecerán los totales por zona y el mapa.
                         @endif
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    {{-- Leaflet + mapa de envíos (Livewire v3) --}}
+@if ($enviosPorCiudad->count())
+    {{-- CSS y JS de Leaflet --}}
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+
+    <script>
+        const enviosPorCiudad = @json($enviosPorCiudad);
+
+        // Coordenadas aproximadas por ciudad. Como solo tenemos la dirección completa,
+        // vamos a detectar si la dirección contiene el nombre de la ciudad.
+        const cityCoords = {
+            'San Miguel':  { lat: 13.4833, lng: -88.1833 },
+            'Usulután':    { lat: 13.3500, lng: -88.4333 },
+            'Soyapango':   { lat: 13.7102, lng: -89.1510 },
+            'San Salvador':{ lat: 13.6929, lng: -89.2182 },
+        };
+
+        function detectarCiudadDesdeDireccion(direccion) {
+            if (!direccion) return null;
+            const dir = direccion.toLowerCase();
+
+            if (dir.includes('san miguel')) return 'San Miguel';
+            if (dir.includes('usulután') || dir.includes('usulutan')) return 'Usulután';
+            if (dir.includes('soyapango')) return 'Soyapango';
+            if (dir.includes('san salvador')) return 'San Salvador';
+
+            return null;
+        }
+
+        function initEnviosMap() {
+            const mapContainer = document.getElementById('map-envios');
+            if (!mapContainer) return;
+
+            // Evitar inicializar dos veces
+            if (window.enviosMap) {
+                window.enviosMap.remove();
+            }
+
+            // Centro aproximado de El Salvador
+            window.enviosMap = L.map('map-envios').setView([13.7, -88.9], 7);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 18,
+                attribution: '&copy; OpenStreetMap'
+            }).addTo(window.enviosMap);
+
+            enviosPorCiudad.forEach(row => {
+                const direccion = row.destinatario_direccion;
+                const total     = row.total;
+                const ciudad    = detectarCiudadDesdeDireccion(direccion);
+                const coord     = ciudad ? cityCoords[ciudad] : null;
+
+                if (!coord) return; // si no detectamos ciudad, lo saltamos
+
+                const marker = L.circleMarker([coord.lat, coord.lng], {
+                    radius: 8 + total, // más envíos => círculo más grande
+                    fillColor: '#B91C1C',
+                    color: '#991B1B',
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 0.8
+                }).addTo(window.enviosMap);
+
+                marker.bindPopup(
+                    `<strong>${ciudad}</strong><br>${total} envío(s)<br><small>${direccion}</small>`
+                );
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', initEnviosMap);
+        document.addEventListener('livewire:navigated', initEnviosMap);
+    </script>
+@endif
+
 </x-layouts.admin>
 </div>

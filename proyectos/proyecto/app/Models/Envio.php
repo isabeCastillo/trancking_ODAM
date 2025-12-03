@@ -26,7 +26,6 @@ class Envio extends Model
         'id_motorista',
         'id_vehiculo',
         'codigo_tracking',
-        'foto',
     ];
 
     public function motorista()

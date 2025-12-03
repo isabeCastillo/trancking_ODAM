@@ -66,10 +66,13 @@ class Dashboard extends Component
             ->get();
 
         if (Schema::hasColumn('envios', 'destinatario_direccion')) {
-            $this->enviosPorCiudad = Envio::select('destinatario_direccion', DB::raw('COUNT(*) as total'))
+            $this->enviosPorCiudad = Envio::select(
+                    'destinatario_direccion',
+                    DB::raw('COUNT(*) as total')
+                )
                 ->groupBy('destinatario_direccion')
                 ->orderByDesc('total')
-                ->limit(10)
+                ->limit(20)
                 ->get();
         } else {
             $this->enviosPorCiudad = collect();
