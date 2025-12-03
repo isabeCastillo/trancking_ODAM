@@ -417,7 +417,7 @@
                                 <label>Estado *</label>
                                 <select wire:model="estado">
                                     <option value="pendiente">Pendiente</option>
-                                    <option value="en_transito">En tránsito</option>
+                                    <option value="en ruta">En ruta</option>
                                     <option value="entregado">Entregado</option>
                                     <option value="cancelado">Cancelado</option>
                                 </select>

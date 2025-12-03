@@ -70,7 +70,8 @@ class EnviosForm extends Component
             'tipo_envio'             => ['nullable', 'string', 'max:100'],
             'fecha_estimada'         => ['nullable', 'date'],
 
-            'estado'                 => ['required', Rule::in(['pendiente', 'en_transito', 'entregado', 'cancelado'])],
+            
+            'estado' => ['required', Rule::in(['pendiente', 'en ruta', 'entregado', 'cancelado'])],
 
             'id_motorista'           => ['nullable', 'exists:users,id'],
 
@@ -96,7 +97,7 @@ class EnviosForm extends Component
 
                     $query = Envio::query()
                         ->where('id_vehiculo', $value)
-                        ->whereIn('estado', ['pendiente', 'en_transito']);
+                        ->whereIn('estado', ['pendiente', 'en ruta']);
 
                     if ($this->envio && $this->envio->exists) {
                         $query->where('id', '!=', $this->envio->id);
@@ -110,7 +111,7 @@ class EnviosForm extends Component
                 },
             ],
 
-            'codigo_tracking'        => [
+            'codigo_tracking' => [
                 'required',
                 'string',
                 'max:50',
