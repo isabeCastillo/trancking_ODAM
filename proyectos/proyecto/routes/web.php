@@ -18,6 +18,7 @@ use App\Livewire\UsersForm;
 use App\Livewire\MotoristaEnvios;
 use App\Livewire\Tracking;
 use App\Livewire\MotoristaVehiculo;
+use App\Livewire\Admin\BitacoraEnvios;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -62,8 +63,11 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
     Route::get('/vehiculos/{vehiculo}/editar', VehiculosForm::class)->name('vehiculos.edit');
 
     Route::get('/admin/tracking', Tracking::class)->name('admin.tracking');
-    
+
+    Route::get('/bitacora-envios', BitacoraEnvios::class)
+        ->name('bitacora.envios');
 });
+
 
 Route::middleware(['auth', 'is_motorista'])->group(function () {
     Route::get('/motorista', MotoristaDashboard::class)

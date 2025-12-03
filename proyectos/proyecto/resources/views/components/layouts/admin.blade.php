@@ -293,6 +293,19 @@
                     <span>Tracking</span>
                 </a>
 
+                <a href="{{ route('bitacora.envios') }}"
+                class="sidebar-link {{ request()->routeIs('bitacora.envios') ? 'is-active' : '' }}">
+                    <span class="icon">
+                        {{-- iconito simple de lista / historial --}}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                            fill="currentColor" class="bi bi-clock-history" viewBox="0 0 16 16">
+                            <path d="M8.515 3.019A5 5 0 1 0 13 8H12a4 4 0 1 1-3.485-4.9z"/>
+                            <path d="M7.5 4.5a.5.5 0 0 1 1 0v3.086l1.528 1.528a.5.5 0 0 1-.707.707L7.5 8.207z"/>
+                        </svg>
+                    </span>
+                    <span>Bitácora de envíos</span>
+                </a>
+
                 <a href="{{ route('usuarios.index') }}"
                     class="sidebar-link {{ request()->routeIs('usuarios.*') ? 'is-active' : '' }}">
                     <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
