@@ -207,18 +207,44 @@
             text-align: center;
         }
 
-        .tracking-image-wrapper {
-            margin-top: 12px;
+        .tracking-photo-card {
+            margin-top: 16px;
+            background-color: #F9FAFB;
+            border-radius: 12px;
+            padding: 12px 14px;
+            border: 1px solid #E5E7EB;
         }
 
-        .tracking-image {
+        .tracking-photo-title {
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #111827;
+        }
+
+        .tracking-photo-wrapper {
             width: 100%;
-            max-width: 260px;
-            border-radius: 12px;
+            max-height: 260px;
+            overflow: hidden;
+            border-radius: 10px;
             border: 1px solid #E5E7EB;
-            box-shadow: 0 6px 16px rgba(15, 23, 42, 0.14);
+            background-color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tracking-photo-wrapper img {
+            width: 100%;
+            height: auto;
             object-fit: cover;
-            display: block;
+        }
+
+        .tracking-photo-empty {
+            font-size: 12px;
+            color: #6B7280;
+            text-align: center;
+            padding: 20px 10px;
         }
     </style>
 
@@ -310,18 +336,19 @@
                     </p>
 
                     {{-- FOTO DEL PAQUETE REGISTRADA POR EL MOTORISTA --}}
-                    @if($ultimaFoto)
-                        <div class="tracking-image-wrapper" style="margin-top: 12px;">
-                            <div class="tracking-section-title" style="margin-bottom: 6px;">
-                                Evidencia fotográfica
+                    <div class="tracking-photo-card">
+                        <div class="tracking-photo-title">Foto del envío</div>
+
+                        @if ($fotoActual)
+                            <div class="tracking-photo-wrapper">
+                                <img src="{{ asset('storage/' . $fotoActual) }}" alt="Foto reciente del envío">
                             </div>
-                            <img
-                                src="{{ asset('storage/' . $ultimaFoto) }}"
-                                alt="Foto del paquete"
-                                class="tracking-image"
-                                style="max-width:260px;border-radius:12px;border:1px solid #E5E7EB;box-shadow:0 6px 16px rgba(15,23,42,0.14);object-fit:cover;">
-                        </div>
-                    @endif
+                        @else
+                            <div class="tracking-photo-empty">
+                                Aún no se ha registrado ninguna fotografía para este envío.
+                            </div>
+                        @endif
+                    </div>
                 </div>
 
                 {{-- Columna derecha: estado actual + “progreso” --}}

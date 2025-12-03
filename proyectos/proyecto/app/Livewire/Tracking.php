@@ -10,30 +10,41 @@ class Tracking extends Component
     public $codigo = '';
     public $envio = null;
     public $mensaje = null;
-    public $ultimaFoto = null;
+    public $fotoActual = null;
 
     public function buscar()
     {
-        $this->reset(['envio', 'mensaje', 'ultimaFoto']);
+        // Limpiamos estado
+        $this->reset(['envio', 'mensaje', 'fotoActual']);
 
-        if (!$this->codigo) {
+        if (!trim($this->codigo)) {
             $this->mensaje = 'Ingresa un código de tracking.';
             return;
         }
 
-        $this->envio = Envio::where('codigo_tracking', $this->codigo)->first();
+        // Traemos el envío con su historial
+        $this->envio = Envio::with('historial')
+            ->where('codigo_tracking', $this->codigo)
+            ->first();
 
-        if (! $this->envio) {
+        if (!$this->envio) {
             $this->mensaje = 'No se encontró un envío con ese código.';
             return;
         }
 
-        $ultimoHistorial = $this->envio
-            ->historial()
+        // 🔹 OJO: aquí usamos $this->envio, no $envio
+        // En historial_envios la columna es evidencia_foto
+        $ultimoHistorialConFoto = $this->envio->historial
             ->whereNotNull('evidencia_foto')
-            ->latest('id')
-            ->first();
-        $this->ultimaFoto = $ultimoHistorial?->evidencia_foto;
+            ->last();   // el más reciente (ya vienen ordenados por fecha_hora asc)
+
+        if ($ultimoHistorialConFoto) {
+            // Foto más reciente subida por el motorista
+            $this->fotoActual = $ultimoHistorialConFoto->evidencia_foto;
+        } else {
+            // Si nunca ha subido foto en el historial, usamos la de envios (si la hubiera)
+            $this->fotoActual = $this->envio->foto;
+        }
     }
 
     public function render()
