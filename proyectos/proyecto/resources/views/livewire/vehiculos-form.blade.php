@@ -176,7 +176,6 @@
         color: var(--color-primary);
     }
 
-    /* 🔻 Responsive */
     @media (max-width: 900px) {
         .app-wrapper {
             align-items: flex-start;
