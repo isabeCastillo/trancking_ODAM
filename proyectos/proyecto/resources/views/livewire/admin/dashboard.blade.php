@@ -484,27 +484,25 @@
                         <div>
                             <div class="card-title">Distribución por zona</div>
                             <div class="card-subtitle">
-                                Se activa cuando agreguen columna de ciudad/zona al envío.
                             </div>
                         </div>
                     </div>
 
                     <div class="map-placeholder">
                         @if ($enviosPorCiudad->count())
-                        <div>
-                            @foreach ($enviosPorCiudad as $ciudad)
-                            <div style="margin-bottom:4px;">
-                                <strong>{{ $ciudad->destinatario_ciudad }}:</strong>
-                                {{ $ciudad->total }} envíos
+                            <div>
+                                @foreach ($enviosPorCiudad as $fila)
+                                <div style="margin-bottom:4px;">
+                                    <strong>{{ $fila->destinatario_direccion }}:</strong>
+                                    {{ $fila->total }} envíos
+                                </div>
+                                @endforeach
+                                <p style="margin-top:8px;font-size:11px;">
+                                </p>
                             </div>
-                            @endforeach
-                            <p style="margin-top:8px;font-size:11px;">
-                                Aquí se puede integrar un mapa con Leaflet más adelante.
-                            </p>
-                        </div>
                         @else
-                        Cuando exista un campo de ciudad/zona en la tabla <code>envios</code>,
-                        aquí aparecerán los totales por zona (y luego el mapa).
+                            Cuando exista un campo de ciudad/zona específico en la tabla <code>envios</code>,
+                            aquí aparecerán los totales por zona.
                         @endif
                     </div>
                 </div>

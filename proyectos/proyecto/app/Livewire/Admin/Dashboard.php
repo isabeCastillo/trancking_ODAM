@@ -6,20 +6,20 @@ use Livewire\Component;
 use App\Models\Envio;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Carbon\Carbon;
 
-class Dashboard extends Component{
+class Dashboard extends Component
+{
     public int $totalEnvios = 0;
-    public int $pendientes = 0;
-    public int $enRuta = 0;
-    public int $entregados = 0;
-    public int $porAsignar = 0;
+    public int $pendientes  = 0;
+    public int $enRuta      = 0;
+    public int $entregados  = 0;
+    public int $porAsignar  = 0;
 
-    public $enviosRecientes = [];
+    public $enviosRecientes    = [];
     public $enviosPorMotorista = [];
-    public $enviosPorTipo = [];
-    public $enviosPorDia = [];
-    public $enviosPorCiudad = [];
+    public $enviosPorTipo      = [];
+    public $enviosPorDia       = [];
+    public $enviosPorCiudad    = [];
 
     public function mount()
     {
@@ -35,44 +35,39 @@ class Dashboard extends Component{
     {
         $this->totalEnvios = Envio::count();
         $this->pendientes  = Envio::where('estado', 'pendiente')->count();
-        $this->enRuta      = Envio::where('estado', 'en ruta')->count();
+
+        $this->enRuta      = Envio::whereIn('estado', ['en ruta', 'en_ruta', 'en_transito'])->count();
+
         $this->entregados  = Envio::where('estado', 'entregado')->count();
 
         $this->porAsignar  = Envio::whereNull('id_motorista')->count();
 
-        $this->enviosRecientes = Envio::latest()->take(8)->get();
+        $this->enviosRecientes = Envio::with('motorista')
+            ->latest()
+            ->take(8)
+            ->get();
 
         $this->enviosPorTipo = Envio::select('tipo_envio', DB::raw('COUNT(*) as total'))
             ->groupBy('tipo_envio')
             ->orderByDesc('total')
             ->get();
-            
+
         $this->enviosPorDia = Envio::selectRaw('DATE(created_at) as fecha, COUNT(*) as total')
             ->where('created_at', '>=', now()->subDays(6)->startOfDay())
             ->groupBy('fecha')
             ->orderBy('fecha')
             ->get();
+        $this->enviosPorMotorista = Envio::join('users', 'envios.id_motorista', '=', 'users.id')
+            ->select('users.name as motorista', DB::raw('COUNT(envios.id) as total'))
+            ->whereNotNull('envios.id_motorista')
+            ->groupBy('envios.id_motorista', 'users.name')
+            ->orderByDesc('total')
+            ->limit(5)
+            ->get();
 
-        // Ranking de motoristas (requiere tabla motoristas)
-        // Ajusta nombres de tabla/columnas si es necesario
-        try {
-            $this->enviosPorMotorista = DB::table('envios')
-                ->join('motoristas', 'envios.id_motorista', '=', 'motoristas.id')
-                ->select('motoristas.nombre as motorista', DB::raw('COUNT(envios.id) as total'))
-                ->whereNotNull('envios.id_motorista')
-                ->groupBy('envios.id_motorista', 'motoristas.nombre')
-                ->orderByDesc('total')
-                ->limit(5)
-                ->get();
-        } catch (\Throwable $e) {
-            // Si aún no existe la tabla motoristas, simplemente dejamos la colección vacía
-            $this->enviosPorMotorista = collect();
-        }
-
-        // Envíos por ciudad/zona (solo si después agregan una columna tipo 'destinatario_ciudad')
-        if (Schema::hasColumn('envios', 'destinatario_ciudad')) {
-            $this->enviosPorCiudad = Envio::select('destinatario_ciudad', DB::raw('COUNT(*) as total'))
-                ->groupBy('destinatario_ciudad')
+        if (Schema::hasColumn('envios', 'destinatario_direccion')) {
+            $this->enviosPorCiudad = Envio::select('destinatario_direccion', DB::raw('COUNT(*) as total'))
+                ->groupBy('destinatario_direccion')
                 ->orderByDesc('total')
                 ->limit(10)
                 ->get();

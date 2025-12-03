@@ -1,10 +1,10 @@
 {{-- resources/views/components/layouts/admin.blade.php --}}
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
-    <title>Panel de Administración - Tracking ODAM</title>
+    <title>{{ $title ?? 'Tracking ODAM' }}</title>
+    <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     @livewireStyles
