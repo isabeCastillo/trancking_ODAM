@@ -108,12 +108,6 @@
                 color: #047857;
             }
 
-            .pagination-links {
-                margin-top: 20px;
-                display: flex;
-                justify-content: flex-end;
-            }
-
             @media (max-width: 600px) {
                 .log-container {
                     padding: 10px;
@@ -225,10 +219,6 @@
                             @endforelse
                         </tbody>
                     </table>
-                </div>
-
-                <div class="pagination-links">
-                    {{ $registros->links() }}
                 </div>
             </div>
         </div>
