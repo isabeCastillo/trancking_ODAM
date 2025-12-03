@@ -14,7 +14,6 @@ class Tracking extends Component
 
     public function buscar()
     {
-        // Limpiamos estado
         $this->reset(['envio', 'mensaje', 'fotoActual']);
 
         if (!trim($this->codigo)) {
@@ -22,7 +21,6 @@ class Tracking extends Component
             return;
         }
 
-        // Traemos el envío con su historial
         $this->envio = Envio::with('historial')
             ->where('codigo_tracking', $this->codigo)
             ->first();
@@ -32,17 +30,13 @@ class Tracking extends Component
             return;
         }
 
-        // 🔹 OJO: aquí usamos $this->envio, no $envio
-        // En historial_envios la columna es evidencia_foto
         $ultimoHistorialConFoto = $this->envio->historial
             ->whereNotNull('evidencia_foto')
-            ->last();   // el más reciente (ya vienen ordenados por fecha_hora asc)
+            ->last();
 
         if ($ultimoHistorialConFoto) {
-            // Foto más reciente subida por el motorista
             $this->fotoActual = $ultimoHistorialConFoto->evidencia_foto;
         } else {
-            // Si nunca ha subido foto en el historial, usamos la de envios (si la hubiera)
             $this->fotoActual = $this->envio->foto;
         }
     }
@@ -51,12 +45,9 @@ class Tracking extends Component
     {
         $view = view('livewire.tracking');
 
-        // Si es admin usar layout admin
         if (auth()->check() && auth()->user()->rol === 'admin') {
             return $view->layout('components.layouts.admin');
         }
-
-        // Si es motorista usar layout motorista
         return $view->layout('components.layouts.motorista');
     }
 }
