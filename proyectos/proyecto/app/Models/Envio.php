@@ -26,6 +26,7 @@ class Envio extends Model
         'id_motorista',
         'id_vehiculo',
         'codigo_tracking',
+        'foto',
     ];
 
     public function motorista()
@@ -39,6 +40,7 @@ class Envio extends Model
     }
     public function historial()
     {
-        return $this->hasMany(HistorialEnvio::class, 'envio_id');
+        return $this->hasMany(HistorialEnvio::class, 'envio_id')
+                    ->orderBy('fecha_hora', 'asc');
     }
 }

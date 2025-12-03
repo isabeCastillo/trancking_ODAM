@@ -1,5 +1,5 @@
-<div>
-        <style>
+<div class="tracking-page">
+    <style>
         .tracking-page {
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         }
@@ -105,8 +105,7 @@
         .tracking-field strong {
             font-weight: 600;
         }
-
-        /* Estado actual */
+        
         .tracking-status-card {
             background-color: #F9FAFB;
             border-radius: 12px;
@@ -207,6 +206,20 @@
             margin-top: 4px;
             text-align: center;
         }
+
+        .tracking-image-wrapper {
+            margin-top: 12px;
+        }
+
+        .tracking-image {
+            width: 100%;
+            max-width: 260px;
+            border-radius: 12px;
+            border: 1px solid #E5E7EB;
+            box-shadow: 0 6px 16px rgba(15, 23, 42, 0.14);
+            object-fit: cover;
+            display: block;
+        }
     </style>
 
     {{-- Encabezado --}}
@@ -244,16 +257,17 @@
                 $badgeClass = [
                     'pendiente' => 'status-badge status-pendiente',
                     'en ruta'   => 'status-badge status-en-ruta',
+                    'en_transito' => 'status-badge status-en-ruta',
                     'entregado' => 'status-badge status-entregado',
                 ][$estado] ?? 'status-badge';
 
                 $step = 1;
-                if ($estado === 'en ruta') $step = 2;
+                if ($estado === 'en ruta' || $estado === 'en_transito') $step = 2;
                 elseif ($estado === 'entregado') $step = 3;
             @endphp
 
             <div class="tracking-info-grid">
-                {{-- Columna izquierda: info del envío --}}
+                {{-- Columna izquierda: info del envío + foto --}}
                 <div>
                     <div class="tracking-section-title">Datos del envío</div>
 
@@ -294,6 +308,20 @@
                     <p class="tracking-field">
                         <strong>Dirección:</strong> {{ $envio->destinatario_direccion }}
                     </p>
+
+                    {{-- FOTO DEL PAQUETE REGISTRADA POR EL MOTORISTA --}}
+                    @if($ultimaFoto)
+                        <div class="tracking-image-wrapper" style="margin-top: 12px;">
+                            <div class="tracking-section-title" style="margin-bottom: 6px;">
+                                Evidencia fotográfica
+                            </div>
+                            <img
+                                src="{{ asset('storage/' . $ultimaFoto) }}"
+                                alt="Foto del paquete"
+                                class="tracking-image"
+                                style="max-width:260px;border-radius:12px;border:1px solid #E5E7EB;box-shadow:0 6px 16px rgba(15,23,42,0.14);object-fit:cover;">
+                        </div>
+                    @endif
                 </div>
 
                 {{-- Columna derecha: estado actual + “progreso” --}}
@@ -320,4 +348,5 @@
                 </div>
             </div>
         @endif
+    </div>
 </div>

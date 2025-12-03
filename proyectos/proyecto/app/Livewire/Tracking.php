@@ -10,16 +10,30 @@ class Tracking extends Component
     public $codigo = '';
     public $envio = null;
     public $mensaje = null;
+    public $ultimaFoto = null;
 
     public function buscar()
     {
+        $this->reset(['envio', 'mensaje', 'ultimaFoto']);
+
+        if (!$this->codigo) {
+            $this->mensaje = 'Ingresa un código de tracking.';
+            return;
+        }
+
         $this->envio = Envio::where('codigo_tracking', $this->codigo)->first();
 
-        if (!$this->envio) {
-            $this->mensaje = "No se encontró ningún envío con ese código.";
-        } else {
-            $this->mensaje = null;
+        if (! $this->envio) {
+            $this->mensaje = 'No se encontró un envío con ese código.';
+            return;
         }
+
+        $ultimoHistorial = $this->envio
+            ->historial()
+            ->whereNotNull('evidencia_foto')
+            ->latest('id')
+            ->first();
+        $this->ultimaFoto = $ultimoHistorial?->evidencia_foto;
     }
 
     public function render()
