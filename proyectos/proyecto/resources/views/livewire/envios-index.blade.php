@@ -372,11 +372,6 @@
                     </tbody>
                 </table>
             </div>
-
-            {{-- Paginación --}}
-            <div class="pagination-links">
-                {{ $envios->links() }}
-            </div>
         </div>
     </div>
 </x-layouts.admin>

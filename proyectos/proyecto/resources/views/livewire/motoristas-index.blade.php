@@ -61,6 +61,7 @@
         outline: none;
         box-shadow: inset 0 1px 2px rgba(0,0,0,0.06);
         width: 280px;
+        max-width: 100%;
     }
 
     .filter-actions input:focus {
@@ -159,7 +160,89 @@
         color: var(--color-text-subtle);
         font-style: italic;
     }
+
+    /* 🔻 RESPONSIVE */
+    @media (max-width: 800px) {
+        .user-management-container {
+            padding: 12px;
+        }
+
+        .filter-actions {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 10px;
+        }
+
+        .filter-controls {
+            width: 100%;
+        }
+
+        .filter-actions input {
+            width: 100%;
+        }
+
+        .create-button {
+            width: 100%;
+            text-align: center;
+        }
+
+        .data-table {
+            border: none;
+            border-radius: 0;
+        }
+
+        .data-table thead {
+            display: none;
+        }
+
+        .data-table tbody tr {
+            display: block;
+            margin-bottom: 12px;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+            background-color: #FFFFFF;
+        }
+
+        .data-table td {
+            display: block;
+            width: 100%;
+            border-bottom: 1px dashed #E5E7EB;
+            position: relative;
+            padding-left: 50%;
+            text-align: right;
+        }
+
+        .data-table td:last-child {
+            border-bottom: none;
+        }
+
+        .data-table td::before {
+            content: attr(data-label);
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-weight: 600;
+            color: var(--color-text-subtle);
+            text-align: left;
+        }
+
+        .action-link,
+        .action-delete-button {
+            display: inline-block;
+            margin-top: 4px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .title-header {
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+    }
 </style>
+
 
 <div class="user-management-container">
     <h2 class="title-header">Gestión de Motoristas</h2>
